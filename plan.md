@@ -1,4 +1,4 @@
-! Google Auth
+# Step 1: Google Auth
 
 Page 1: Single link: 
 - [Log in with Google]
