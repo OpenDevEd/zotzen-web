@@ -54,5 +54,7 @@ On the same page, now add this text:
 
 # Step 3 - replace fake API call with actual API call.
 
+The 'Fake API call' is replaced by the actual API calls to Zenodo/Zotero.
+
 # Step 4. Provide EdTech Hub layout
 Should be a 'pluggable'.
