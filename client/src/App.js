@@ -1,6 +1,9 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import { Component } from 'react';
+let lib = require("zotzen-lib");
+const result = lib.create();
+//console.log(`The result is: ${JSON.stringify(result)}`);
 
 
 
@@ -28,7 +31,7 @@ render(){
       <div>
       <h3>welcome to React</h3>
       <p className="App-intro">;{this.state.apiResponse}</p>
-      
+      <p>{`The result is: ${JSON.stringify(result)}`}</p>
       </div>
       );
   }

@@ -13,6 +13,5 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1"
-    "zotzen-lib": "^1.0.1"
   }
 }
