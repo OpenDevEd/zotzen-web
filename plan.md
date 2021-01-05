@@ -45,7 +45,10 @@ There should be a configuration file:
 Page 3:
 - Your record is being created. One moment please.
 
-'Fake API call': Set DOI=123 and ZOTEROID=ABC
+* 'Fake API call': Set DOI=123 and ZOTEROID=ABC
+
+* upon successful creation the call will the logged into a log file 'activit-log.txt' with the following information: user email, zotero-id, zenodo-id
+
 
 On the same page, now add this text:
 - A Zotero ID and a DOI have been registered. Please include the follwoing citation in the document that you are writing (use GDoc url for hyperlink). Please note that this DOI and the link to the Evidence library is not live yet. It will only be live once the document has gone through the required approval stages.
