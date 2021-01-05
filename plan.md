@@ -51,6 +51,7 @@ On the same page, now add this text:
 - A Zotero ID and a DOI have been registered. Please include the follwoing citation in the document that you are writing (use GDoc url for hyperlink). Please note that this DOI and the link to the Evidence library is not live yet. It will only be live once the document has gone through the required approval stages.
 - Your citation is:
 - "[AUTHOR] ([date]). [Title].  DOI: [DOI]. Available from https://edtechhub.org/lib/[ZOTEROID] . Avaialble under Creative Commons By.". 
+- Button with the text "Create another record"
 
 # Step 3 - replace fake API call with actual API call.
 
