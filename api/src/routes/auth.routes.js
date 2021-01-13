@@ -8,7 +8,7 @@ routes.get('/google', passport.authenticate("google", {
     session: false,
     scope: ["profile", "email"],
 }));
- 
+
 routes.get('/google/callback', passport.authenticate("google", {
     session: false,
 }), controller.callBack);
