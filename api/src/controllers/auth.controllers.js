@@ -1,8 +1,9 @@
-import { User } from '../database/models';
+import passport from 'passport';
 
-export const login = async (req, res) => {
+export const callBack = async (req, res) => {
   try {
-    return res.status(200).json({ message: 'Login' });
+    const { user } = req;
+    return res.status(200).json({ data: user, statusCode: 200 });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });
