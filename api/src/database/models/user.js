@@ -10,19 +10,33 @@ const userSchema = new Schema(
       unique: true,
     },
     profilePhotoURL: String,
+    googleId: {
+      type: String,
+      required: true,
+      unique: true,
+    }
   },
   { timestamps: true }
 );
-
-userSchema.plugin(uniqueValidator, {
-  message: 'The {PATH} provided is already taken.',
-});
-
-userSchema.set('toJSON', {
-  transform: (_doc, ret, _options) => {
-    delete ret.password;
-    return ret;
-  },
-});
+userSchema.statics.findOneOrCreate = function findOneOrCreate(condition, doc) {
+  const self = this;
+  const newDocument = doc;
+  return new Promise((resolve, reject) => {
+    return self.findOne(condition)
+    .then((result) => {
+      if (result) {
+        return resolve(result);
+      }
+      return self.create(newDocument)
+      .then((result) => {
+        return resolve(result);
+      }).catch((error) => {
+        return reject(error);
+      })
+    }).catch((error) => {
+      return reject(error);
+    })
+  });
+};
 
 export default mongoose.model('User', userSchema);
