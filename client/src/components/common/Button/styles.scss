@@ -1,0 +1,12 @@
+@import "bootstrap";
+$color-primary:#ff5c00;
+
+.btn-orange {
+    @include button-variant($color-primary, darken($color-primary, 7.5%), darken($color-primary, 10%), lighten($color-primary,5%), lighten($color-primary, 10%), darken($color-primary,30%));
+    text-transform: uppercase;
+
+}
+
+.right-floated {
+  float: right;
+}

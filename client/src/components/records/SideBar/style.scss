@@ -1,0 +1,54 @@
+.sidebar {
+  border: none;
+  border-radius: .5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  text-align: center;
+
+  &-navs {
+    padding: 1rem;
+    border-top: 2px solid #f8f8f8fc;
+    margin-top: 1rem;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+
+    .nav-label {
+      margin-left: 1rem;
+    }
+    .fas {
+      font-size: 18px;
+    }
+    a {
+      text-decoration: none;
+      color: #555;
+      padding: 5px 10px;
+      text-align: left;
+
+    }
+
+    .nav-item {
+      padding: .4rem .8rem;
+
+      text-align: left;
+      text-decoration: none;
+      height: 40px;
+
+      &:hover {
+        background-color: rgba(238, 238, 238, 0.452);
+      }
+
+
+    }
+  }
+}
+
+.profile-image {
+  height: 100px;
+  border-radius: 50%;
+}
+.image-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+}
