@@ -6,10 +6,10 @@ const routes = Router();
 // Listing categories
 routes.get('/categories', authenticateUser, controller.listCategories);
 
-// Listing my records
-routes.get('/', authenticateUser, controller.test);
-
 // Creating new record
-routes.post('/', authenticateUser, controller.test);
+routes.post('/', authenticateUser, controller.createOutput);
+
+// Listing my records
+// routes.get('/', authenticateUser, controller.test);
 
 export default routes;
