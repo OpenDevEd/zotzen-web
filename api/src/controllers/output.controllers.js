@@ -77,3 +77,15 @@ export const createOutput = async (req, res) => {
     return res.status(status).json({ message, statusCode: status });
   }
 };
+
+export const fetchOutputOfLoggedInUser = async (req, res) => {
+  try {
+    const response = await Output.find({
+      userId: req.user.id
+    })
+    return res.status(200).json({ data: response, statusCode: 200 });
+  } catch (error) {
+    const { message, status = 400 } = error;
+    return res.status(status).json({ message, statusCode: status });
+  }
+};
