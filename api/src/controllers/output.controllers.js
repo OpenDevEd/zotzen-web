@@ -38,8 +38,10 @@ export const createOutput = async (req, res) => {
     const {
       title,
       author,
-      outputCategory, // Collections
+      categoryName, // Collection Name
+      categoryKey, // Collection Key
       date,
+      reportNumber,
       primaryTeam,
       documentURL
     } = req.body;
@@ -54,7 +56,9 @@ export const createOutput = async (req, res) => {
       authors,
       date,
       googledoc: documentURL,
-      collections: [outputCategory],
+      reportType: categoryName,
+      collections: [categoryKey],
+      reportNumber,
       team: primaryTeam,
       note: `This output was added by ${firstName} ${lastName} on ${new Date()}`,
       // Default Info
