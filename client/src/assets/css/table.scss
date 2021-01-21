@@ -1,0 +1,18 @@
+.order-table, .admin-order-table {
+   .ant-pagination-item-link{
+      border: none !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   } 
+   .ant-pagination-item{
+      border: 1px solid transparent;
+      &.ant-pagination-item-active{
+         border-color: #ccc !important;
+         border-radius: 5px;
+         a{
+            color: #000000;
+         }
+      }
+   }
+}
