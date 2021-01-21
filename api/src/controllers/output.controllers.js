@@ -38,10 +38,10 @@ export const createOutput = async (req, res) => {
     const {
       title,
       author,
-      categoryName, // Collection Name
-      categoryKey, // Collection Key
-      date,
+      categoryName,
+      categoryNamekey,
       reportNumber,
+      date,
       primaryTeam,
       documentURL
     } = req.body;
@@ -57,7 +57,7 @@ export const createOutput = async (req, res) => {
       date,
       googledoc: documentURL,
       reportType: categoryName,
-      collections: [categoryKey],
+      collections: [categoryNamekey],
       reportNumber,
       team: primaryTeam,
       note: `This output was added by ${firstName} ${lastName} on ${new Date()}`,
@@ -87,7 +87,7 @@ export const fetchOutputOfLoggedInUser = async (req, res) => {
     const response = await Output.find({
       userId: req.user.id
     })
-    return res.status(200).json({ data: response, statusCode: 200 });
+    return res.status(200).json({ data: response.reverse(), statusCode: 200 });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });
