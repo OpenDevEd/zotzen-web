@@ -1,0 +1,53 @@
+.container {
+  width: 100%;
+}
+  
+.demi-cycle {
+  clippath: ellipse(60% 90% at 50% 2%);
+  background-color: #fff7f7;
+}
+  
+.ant-input-search > .ant-input-group > .ant-input-group-addon .ant-input-search-button {
+  border-radius: 0 2px 2px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-order-table {
+  th.ant-table-cell {
+    background-color: #0C1428;
+    color: #fff;
+  }
+}
+
+.screen-center{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.magnet-table{
+  thead{
+    th{
+      padding: 15px 30px;
+    }
+  }
+  td{
+    padding: 15px 30px;
+  }
+  tr:nth-child(even) {
+    background-color: #FAFAFA;
+  }
+}
+
+.contact-page{
+  .bg-lg-block{
+    top: 28%;
+    height: 62vh;
+    z-index: -7473;
+    background-color: #FAFAFA;
+  }
+}
