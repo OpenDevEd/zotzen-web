@@ -1,25 +1,27 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import classnames from 'classnames';
-import LogoIcon from '../../assets/Icons/logo.png';
+import React from "react"
+import { Link, useLocation } from "react-router-dom"
+import classnames from "classnames"
+import LogoIcon from "../../assets/Icons/logo.png"
 
 const NAV_LINKS = [
-  { name: 'Home', path: '/' },
-  { name: 'Contact', path: '' },
-];
+  { name: "HOME", path: "/" },
+  { name: "ABOUT US", path: "" },
+  { name: "TOOLS", path: "/dashboard" },
+  { name: "EVIDENCE", path: "/outputs" },
+  { name: "BLOG", path: "" },
+  { name: "CONTACT US", path: "" },
+]
 
 interface Props {}
 const AppHeader: React.FC<Props> = () => {
-  const location = useLocation();
+  const location = useLocation()
 
   return (
     <div>
       <div className="container mx-auto">
         <nav className="flex flex-row py-6 justify-between ">
           <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <Link
-              to="/"
-            >
+            <Link to="/">
               <img src={LogoIcon} alt="logo" sizes="30" className="h-10 mr-2" />
             </Link>
           </div>
@@ -27,23 +29,23 @@ const AppHeader: React.FC<Props> = () => {
             <div className="text-sm text-center lg:flex-grow">
               {NAV_LINKS.map((page) => {
                 const className = classnames(
-                  'block mt-4 lg:inline-block lg:mt-0 text-gray-500 hover:text-gray-700 mr-10 capitalize pb-1',
+                  "block mt-4 lg:inline-block lg:mt-0 text-gray-500 hover:text-gray-700 mr-10 capitalize pb-1",
                   {
-                    'nav-active': page.path === location.pathname,
+                    "nav-active": page.path === location.pathname,
                   }
-                );
+                )
                 return (
                   <Link to={page.path} key={page.name} className={className}>
                     <p>{page.name}</p>
                   </Link>
-                );
+                )
               })}
             </div>
           </div>
         </nav>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AppHeader;
+export default AppHeader

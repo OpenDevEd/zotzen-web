@@ -1,29 +1,41 @@
-import zoterolib from 'zotero-lib';
-import zotzenlib from 'zotzen-lib';
-import { config } from 'dotenv';
-import { filterOutputCategories } from '../helpers/filterOutputCategories';
-import Output from '../database/models/output';
-import User from '../database/models/user';
+import zoterolib from "zotero-lib";
+import zotzenlib from "zotzen-lib";
+import { config } from "dotenv";
+import { filterOutputCategories } from "../helpers/filterOutputCategories";
+import Output from "../database/models/output";
+import User from "../database/models/user";
 
 config();
-const { OUTPUT_CATEGORY_KEY, OUTPUT_GROUP_ID } = process.env;
+const {
+  OUTPUT_CATEGORY_KEY,
+  OUTPUT_GROUP_ID,
+  ZOTERO_API_KEY,
+  ZENODO_ACCESS_TOKEN,
+} = process.env;
 
-const zoterolibIns = new zoterolib();
+const zoterolibIns = new zoterolib({
+  verbose: true,
+  "group-id": OUTPUT_GROUP_ID,
+  api_key: ZOTERO_API_KEY,
+});
 
 const defaultOutputData = {
+  verbose: true,
+  zotero_api_key: ZOTERO_API_KEY,
+  zenodo_access_token: ZENODO_ACCESS_TOKEN,
   institution: "EdTech Hub",
-  language: "en",           
-  rights: "Creative Commons Attribution 4.0", 
+  language: "en",
+  rights: "Creative Commons Attribution 4.0",
   kerko_url: "https://docs.edtechhub.org/lib/",
   tags: ["_r:AddedByZotZen"],
-  description: "An output of the EdTech Hub, https://edtechhub.org"
+  description: "An output of the EdTech Hub, https://edtechhub.org",
 };
 
 export const listCategories = async (req, res) => {
   try {
     let categories = await zoterolibIns.collections({
       key: OUTPUT_CATEGORY_KEY,
-      terse: true
+      terse: true,
     });
     categories = await filterOutputCategories(categories);
     return res.status(200).json({ categories, statusCode: 200 });
@@ -43,10 +55,10 @@ export const createOutput = async (req, res) => {
       reportNumber,
       date,
       primaryTeam,
-      documentURL
+      documentURL,
     } = req.body;
 
-    const authors = author.split(';');
+    const authors = author.split(";");
 
     const { firstName, lastName } = req.user;
 
@@ -62,20 +74,20 @@ export const createOutput = async (req, res) => {
       team: primaryTeam,
       note: `This output was added by ${firstName} ${lastName} on ${new Date()}`,
       // Default Info
-      ...defaultOutputData
+      ...defaultOutputData,
     });
-    if (newOutput.message === 'success') {
+    if (newOutput.message === "success") {
       const { data } = newOutput;
       const { kerko_url, DOI } = data;
       const response = await Output.create({
         userId: req.user.id,
         title,
         linkToLibrary: kerko_url,
-        doi: DOI
-      })
+        doi: DOI,
+      });
       return res.status(200).json({ data: response, statusCode: 200 });
     }
-    return res.status(422).json({ message: 'Invalid data', statusCode: 422 });
+    return res.status(422).json({ message: "Invalid data", statusCode: 422 });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });
@@ -85,8 +97,8 @@ export const createOutput = async (req, res) => {
 export const fetchOutputOfLoggedInUser = async (req, res) => {
   try {
     const response = await Output.find({
-      userId: req.user.id
-    })
+      userId: req.user.id,
+    });
     return res.status(200).json({ data: response.reverse(), statusCode: 200 });
   } catch (error) {
     const { message, status = 400 } = error;
