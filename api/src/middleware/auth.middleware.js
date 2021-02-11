@@ -23,3 +23,11 @@ export const verifyToken = async (req, res, next) => {
     }
     return true;
 };
+
+export const isAdmin = async (req, res, next) => {
+    if (req.user.role !== 'Administrator') {
+        return res.status(401).send({ status: 401, error: 'Unauthorized access' });
+    }
+    next();
+    return true;
+};

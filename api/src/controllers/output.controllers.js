@@ -94,11 +94,12 @@ export const createOutput = async (req, res) => {
   }
 };
 
-export const fetchOutputOfLoggedInUser = async (req, res) => {
+export const fetchOutput = async (req, res) => {
   try {
-    const response = await Output.find({
-      userId: req.user.id,
-    });
+    const response =
+      req.user.role === "Administrator"
+        ? await Output.find()
+        : await Output.find({ userId: req.user.id });
     return res.status(200).json({ data: response.reverse(), statusCode: 200 });
   } catch (error) {
     const { message, status = 400 } = error;
