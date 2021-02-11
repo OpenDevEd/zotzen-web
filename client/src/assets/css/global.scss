@@ -1,0 +1,231 @@
+@import './input.scss';
+@import './custom.scss';
+@import './table.scss';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "DM Sans", sans-serif;
+}
+
+
+* {
+  font-family: "DM Sans", sans-serif;
+}
+.page-container {
+  min-height: 54vh;
+}
+
+.leading-0 {
+  line-height: 1;
+}
+
+.nav-active {
+  border-bottom-color: #ff5c00;
+  border-bottom-width: 3px;
+  color: #000 !important;
+}
+
+.image-uploader {
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  .ant-upload.ant-upload-select-picture-card {
+    width: 100% !important;
+    height: 100% !important;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    text-align: center;
+    vertical-align: top;
+    background-color: #fafafa;
+    border: 1px dashed #d9d9d9;
+    border-radius: 2px;
+    cursor: pointer;
+    -webkit-transition: border-color 0.3s;
+    transition: border-color 0.3s;
+  }
+}
+
+.ant-tabs-nav-list {
+  width: 100% !important;
+}
+
+.ant-tabs-tab {
+  color: rgba($color: #000000, $alpha: 0.3) !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 50%;
+
+  &.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #000000 !important;
+  }
+}
+
+.center-all {
+  display: flex !important;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.ant-input.rounded-md,
+.ant-select.rounded-md .ant-select-selector,
+.ant-input-number.rounded-md {
+  border-radius: 0.3rem;
+}
+
+.resisable-component {
+  &:active {
+    border: 1px dashed #000000;
+  }
+  &:hover {
+    border: 1px dashed #000000;
+  }
+}
+
+.ant-checkbox-wrapper {
+  color: initial;
+}
+
+.color-selector {
+  display: inline-block;
+  margin: 0 auto;
+  border-radius: 3px;
+  position: relative;
+  padding: 6px 32px 6px 10px;
+  font-family: verdana;
+  background: white;
+
+  &::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 5px 0 5px;
+    border-color: black transparent transparent transparent;
+    position: absolute;
+    right: 10px;
+    top: 17px;
+  }
+
+  .circle {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    margin-right: 10px;
+  }
+
+  .hidden {
+    //   position: absolute;
+    //   left: 0;
+    //   opacity: 0;
+  }
+
+  span {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.overlay {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  // position: absolute;
+  // left: 0;
+  // right: 0;
+  // margin: 0 auto;
+  // top: 105px;
+  transition: 1s;
+
+  &.active {
+    top: calc(-50% + 105px);
+    width: 160%;
+    height: 160%;
+    left: -30%;
+  }
+}
+
+input.color-picker {
+  // display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  // border: 1px solid #eee;
+  // margin-right: 10px;
+  display: inline-block;
+  margin: 0 auto;
+  border-radius: 3px;
+  position: relative;
+  //padding: 6px 32px 6px 10px;
+  font-family: verdana;
+  background: white;
+  &::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 5px 0 5px;
+    border-color: black transparent transparent transparent;
+    position: absolute;
+    right: 10px;
+    top: 17px;
+  }
+}
+
+.magnet-continer {
+  width: 90vw;
+  height: calc((90vw / 17 )* 22 );
+}
+
+
+@media only screen and (min-width: 768px) {
+  .magnet-continer {
+    width: 500px;
+    height: calc((500px / 17 )* 22);
+  }
+}
+
+.bg-force-blue {
+  background-color: #0557ba !important;
+  border: none !important;
+}
+
+.magent-bg-preview {
+  width: 3.8rem;
+  height: 3.8rem;
+}
+
+.gray-to-white {
+  background: rgb(237, 242, 247);
+  background: linear-gradient(
+    90deg,
+    rgba(237, 242, 247, 1) 0%,
+    rgba(252, 252, 252, 1) 57%
+  );
+}
+
+textarea.text-editor:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.zoom {
+  transition: transform .2s; /* Animation */
+}
+
+.zoom:hover {
+  transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+
+.payment-magnet-preview {
+  display: block;
+  @media  (max-width: 767px) {
+    display: none;
+  }
+}

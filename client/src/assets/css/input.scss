@@ -1,0 +1,111 @@
+.magnetic-form{
+    /****  floating-Lable style start ****/
+    *:focus {
+      outline: none;
+      border-color: inherit;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+    .floating-label { 
+      position:relative; 
+      &:focus{
+        outline: none;
+      }
+    }
+    .floating-input , .floating-select {
+      font-size:14px;
+      display:block;
+      width:100%;
+      height:40px;
+      background-color: transparent;
+    }
+    
+  
+    
+  
+    label {
+      color:#999; 
+      font-size:14px;
+      font-weight:normal;
+      position:absolute;
+      pointer-events:none;
+      left:5px;
+      top:8px;
+      transition:0.2s ease all; 
+      -moz-transition:0.2s ease all; 
+      -webkit-transition:0.2s ease all;
+    }
+    
+    .floating-input:focus ~ label, 
+    .floating-input:placeholder-shown ~ label, 
+    .floating-label input:not([value=""]):valid ~ label, 
+    .ant-input-number.floating-input ~ label{
+      top:-12px;
+      font-size:14px;
+      color:#000000;
+      background-color: #fff;
+    }
+  
+  
+    
+    .floating-label.input-has-value label{
+      top:-12px;
+      font-size:14px;
+      color:#000000;
+      background-color: #fff;
+    }
+    /* active state */
+    .floating-input:focus ~ .bar:before, 
+    .floating-input:focus ~ .bar:after, 
+    .floating-select:focus ~ .bar:before, 
+    .floating-select:focus ~ .bar:after {
+      width:50%;
+    }
+    
+    *, *:before, *:after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    
+  
+    /* highlighter */
+    .highlight {
+      position:absolute;
+      height:50%; 
+      width:100%; 
+      top:15%; 
+      left:0;
+      pointer-events:none;
+      opacity:0.5;
+    }
+    
+    /* active state */
+    .floating-input:focus ~ .highlight , 
+    .floating-select:focus ~ .highlight {
+      -webkit-animation:inputHighlighter 0.3s ease;
+      -moz-animation:inputHighlighter 0.3s ease;
+      animation:inputHighlighter 0.3s ease;
+    }
+    
+    /* animation */
+    @-webkit-keyframes inputHighlighter {
+        from { background:#ffffff; }
+      to 	{ width:0; background:transparent; }
+    }
+    @-moz-keyframes inputHighlighter {
+        from { background:#ffffff; }
+      to 	{ width:0; background:transparent; }
+    }
+    @keyframes inputHighlighter {
+        from { background:#ffffff; }
+      to 	{ width:0; background:transparent; }
+    }
+    
+  .floating-label .ant-select-selector{
+    height: 40px !important;
+    span{
+      padding-top: 5px;
+    }
+  }
+}
