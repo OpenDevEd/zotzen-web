@@ -9,7 +9,7 @@ const { APP_FRONTEND_URL } = process.env;
 export const callBack = async (req, res) => {
   try {
     const { user } = req;
-    const payload = { userId: user._id };
+    const payload = { userId: user._id, role: user.role };
     const token = await generateToken(payload);
     await loginActivity.create({ userId: user._id });
     return res.redirect(`${APP_FRONTEND_URL}/authorize/${token}`);

@@ -1,5 +1,5 @@
-import mongoose, { Schema } from 'mongoose';
-import uniqueValidator from 'mongoose-unique-validator';
+import mongoose, { Schema } from "mongoose";
+import uniqueValidator from "mongoose-unique-validator";
 const userSchema = new Schema(
   {
     firstName: String,
@@ -14,7 +14,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-    }
+    },
+    role: {
+      type: String,
+      defaultValue: "Standard",
+    },
   },
   { timestamps: true }
 );
@@ -22,21 +26,25 @@ userSchema.statics.findOneOrCreate = function findOneOrCreate(condition, doc) {
   const self = this;
   const newDocument = doc;
   return new Promise((resolve, reject) => {
-    return self.findOne(condition)
-    .then((result) => {
-      if (result) {
-        return resolve(result);
-      }
-      return self.create(newDocument)
+    return self
+      .findOne(condition)
       .then((result) => {
-        return resolve(result);
-      }).catch((error) => {
-        return reject(error);
+        if (result) {
+          return resolve(result);
+        }
+        return self
+          .create(newDocument)
+          .then((result) => {
+            return resolve(result);
+          })
+          .catch((error) => {
+            return reject(error);
+          });
       })
-    }).catch((error) => {
-      return reject(error);
-    })
+      .catch((error) => {
+        return reject(error);
+      });
   });
 };
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model("User", userSchema);

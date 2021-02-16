@@ -10,6 +10,6 @@ routes.get('/categories', authenticateUser, controller.listCategories);
 routes.post('/', authenticateUser, controller.createOutput);
 
 // Listing my records
-routes.get('/', authenticateUser, controller.fetchOutputOfLoggedInUser);
+routes.get('/', authenticateUser, controller.fetchOutput);
 
 export default routes;
