@@ -30,7 +30,7 @@
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "zotero-lib": "^1.0.34",
-    "zotzen-lib": "^1.0.56"
+    "zotzen-lib": "^1.0.57"
   },
   "devDependencies": {
     "@babel/cli": "7.12.10",

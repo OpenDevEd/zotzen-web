@@ -1,10 +1,16 @@
 import User from "../database/models/user";
+import loginActivity from "../database/models/login_activity";
 
 const allRoles = ["Standard", "Administrator"];
 
 export const listOfUsers = async (req, res) => {
   try {
     const users = await User.find();
+    // let userData = [];
+    // users.map(async (user) => {
+    //   const loginHistory = await loginActivity.find({ userId: user._id });
+    //   userData.push({ ...user, loginActivity: loginHistory });
+    // });
     return res.status(200).json({ data: users, statusCode: 200 });
   } catch (error) {
     const { message, status = 400 } = error;
