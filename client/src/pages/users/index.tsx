@@ -13,7 +13,7 @@ const Outputs = () => {
   const [options, setOptions] = useState<UnknownObject[]>([])
   const fetchData = async () => {
     try {
-      const { data }: UnknownObject = await axios.get("/output")
+      const { data }: UnknownObject = await axios.get("/user")
       setOptions(data)
     } catch (err) {
       message.error(err.message || err)
@@ -27,22 +27,18 @@ const Outputs = () => {
 
   const columns = [
     {
-      name: "Title",
-      selector: "title",
+      name: "Name",
+      selector: "names",
       sortable: true,
+      cell: (row: any) => `${row.firstName} ${row.lastName}`,
     },
     {
-      name: "DOI",
-      selector: "doi",
+      name: "Email",
+      selector: "email",
     },
     {
-      name: "Link",
-      selector: "linkToLibrary",
-      cell: (row: any) => (
-        <a target="_blank" rel="noreferrer" href={row.linkToLibrary}>
-          {row.linkToLibrary}
-        </a>
-      ),
+      name: "Role",
+      selector: "role",
     },
   ]
 
@@ -50,8 +46,8 @@ const Outputs = () => {
     <UserLayout>
       <div>
         <div>
-          <h1 className="uppercase font-thin">Created Outputs</h1>
-          <p className="text-xs text-gray-500">List of My Outputs</p>
+          <h1 className="uppercase font-thin">Users</h1>
+          <p className="text-xs text-gray-500">List of Users</p>
         </div>
       </div>
       <div className="mt-6">

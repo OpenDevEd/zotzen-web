@@ -9,9 +9,9 @@ const Logout = React.lazy(() => import("./pages/auth/logout"))
 const AuthorizeUser = React.lazy(() => import("./pages/auth/authorizeUser"))
 const DashboardPage = React.lazy(() => import("./pages/dashboard"))
 const OutputPage = React.lazy(() => import("./pages/outputs"))
+const UsersPage = React.lazy(() => import("./pages/users"))
 
 const AppRoutes = () => {
-
   return (
     <Suspense fallback={<PageLoading />}>
       <Router>
@@ -22,6 +22,9 @@ const AppRoutes = () => {
             </Route>
             <Route path="/outputs">
               <OutputPage />
+            </Route>
+            <Route path="/users">
+              <UsersPage />
             </Route>
             <Route path="/authorize/:token">
               <AuthorizeUser />
