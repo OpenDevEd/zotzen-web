@@ -40,7 +40,7 @@ const UserSidebar = () => {
             <h1 className="text-lg">
               Welcome {`${userInformation.lastName || ""} `} !
             </h1>
-            <p className="uppercase text-xs">Dashboard</p>
+            <p className="uppercase text-xs">{`${userInformation.role || ""} `}</p>
           </div>
           {[
             {

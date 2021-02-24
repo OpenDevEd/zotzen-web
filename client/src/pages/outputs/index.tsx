@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react"
-import { message } from "antd"
-import DataTable from "react-data-table-component"
+import {
+  message,
+  Spin,
+  Table,
+  Menu,
+  Dropdown,
+  Button,
+  Space,
+  Tooltip,
+} from "antd"
+import { DownOutlined } from "@ant-design/icons"
 import UserLayout from "../../components/Layout/UserLayout"
 import { axios } from "../../services"
 
@@ -13,35 +22,68 @@ const Outputs = () => {
   const [options, setOptions] = useState<UnknownObject[]>([])
   const fetchData = async () => {
     try {
-      const { data }: UnknownObject = await axios.get("/output")
+      let { data }: UnknownObject = await axios.get("/output")
+      data = data.map(function (el: any, index: number) {
+        var o = Object.assign({}, el)
+        o.key = index
+        return o
+      })
       setOptions(data)
+      setLoading(false)
     } catch (err) {
       message.error(err.message || err)
     } finally {
       setLoading(false)
     }
   }
+  const handleMenuClick = (e: any) => {
+    message.info("Click on menu item.")
+    console.log("click", e)
+  }
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="1">Update status</Menu.Item>
+      <Menu.Item key="2">Activate DOI</Menu.Item>
+      <Menu.Item key="3">Update metadata</Menu.Item>
+      <Menu.Item key="4">Reserve new DOI</Menu.Item>
+      <Menu.Item key="5">Copy citation</Menu.Item>
+    </Menu>
+  )
   useEffect(() => {
     fetchData()
   }, [])
 
   const columns = [
     {
-      name: "Title",
-      selector: "title",
-      sortable: true,
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
     },
     {
-      name: "DOI",
-      selector: "doi",
+      title: "DOI",
+      dataIndex: "doi",
+      key: "doi",
     },
     {
-      name: "Link",
-      selector: "linkToLibrary",
-      cell: (row: any) => (
-        <a target="_blank" rel="noreferrer" href={row.linkToLibrary}>
-          {row.linkToLibrary}
+      title: "Link",
+      dataIndex: "linkToLibrary",
+      key: "linkToLibrary",
+      render: (linkToLibrary: any) => (
+        <a target="_blank" rel="noreferrer" href={linkToLibrary}>
+          {linkToLibrary}
         </a>
+      ),
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      render: (linkToLibrary: any) => (
+        <Dropdown overlay={menu}>
+          <Button>
+            Actions <DownOutlined />
+          </Button>
+        </Dropdown>
       ),
     },
   ]
@@ -55,7 +97,13 @@ const Outputs = () => {
         </div>
       </div>
       <div className="mt-6">
-        <DataTable columns={columns} data={options} pagination={true} />
+        {isLoading ? (
+          <div style={{ textAlign: "center" }}>
+            <Spin tip="Loading..." size="large"></Spin>
+          </div>
+        ) : (
+          <Table dataSource={options} columns={columns} />
+        )}
       </div>
     </UserLayout>
   )
