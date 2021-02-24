@@ -30,7 +30,11 @@ export const updateUserRole = async (req, res) => {
       });
     }
 
-    const userInfo = await User.findByIdAndUpdate(userId, { role });
+    const userInfo = await User.findByIdAndUpdate(
+      userId,
+      { role },
+      { new: true }
+    );
     if (!userInfo) {
       return res
         .status(404)

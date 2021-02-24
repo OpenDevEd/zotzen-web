@@ -2,11 +2,10 @@ import React from "react"
 import CustomButton from "../../../components/Button"
 
 const LoginPage = () => {
-  
   const handleSubmit = async () => {
     window.location.href = `${process.env.REACT_APP_API_BASE_URL}/auth/google`
   }
-  
+
   return (
     <div className="container mx-auto my-12">
       <div className="flex flex-col items-center justify-center ">
@@ -15,7 +14,7 @@ const LoginPage = () => {
             <div className="form magnetic-form">
               <div className="my-8">
                 <CustomButton
-                classes="text-lg font-bold my-2"
+                  classes="text-lg font-bold my-2"
                   size="large"
                   block
                   onClick={handleSubmit}
