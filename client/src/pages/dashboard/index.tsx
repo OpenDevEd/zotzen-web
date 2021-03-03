@@ -74,17 +74,14 @@ const Dashboard = () => {
     }
     try {
       const res: any = await axios.post("/output", data)
-      const { doi, linkToLibrary } = res.data
+      const { citation } = res.data
       //set the message form response here.
-      const year = new Date(values.date).getFullYear()
-      setResMessage(
-        `${values.author} (${year}). ${values.title}. ${category?.name} No. ${values.reportNumber}. DOI: ${doi} Available at ${linkToLibrary}. Available under Creative Commons Attribution 4.0 International, https://creativecommons.org/licenses/by/4.0/.`
-      )
+      setResMessage(citation)
       resetForm({
         values: INITIAL_VALUES,
       })
     } catch (err) {
-      console.log(err)
+      message.error(err.message || err)
     } finally {
       setSubmitting(false)
     }

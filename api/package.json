@@ -11,6 +11,7 @@
     "start": "NODE_ENV=development nodemon --exec babel-node ./src/app.js"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.4.2",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",

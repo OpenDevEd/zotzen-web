@@ -36,12 +36,12 @@ const Outputs = () => {
       setLoading(false)
     }
   }
-  const handleMenuClick = (e: any) => {
-    message.info("Click on menu item.")
-    console.log("click", e)
+  const handleMenuClick = (citation: any) => {
+    navigator.clipboard.writeText(citation)
+    message.success("Copied to clipboard. You can paste it in a document")
   }
   const menu = (
-    <Menu onClick={handleMenuClick}>
+    <Menu>
       <Menu.Item key="1">Update status</Menu.Item>
       <Menu.Item key="2">Activate DOI</Menu.Item>
       <Menu.Item key="3">Update metadata</Menu.Item>
