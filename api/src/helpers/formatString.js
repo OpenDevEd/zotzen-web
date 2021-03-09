@@ -39,7 +39,7 @@ export const createCitation = async (data) => {
   let authorsList = "";
 
   await authors.map((author) => {
-    authorsList += ` ${author.lastName} ${author.firstName[0].toUpperCase()}.,`;
+    authorsList += ` ${author.lastName}, ${author.firstName[0].toUpperCase()}.,`;
   });
   //remove last comma
   authorsList = authorsList.replace(/,\s*$/, "");

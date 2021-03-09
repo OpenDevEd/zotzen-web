@@ -3,11 +3,7 @@ import { config } from "dotenv";
 
 config();
 
-const {
-  OUTPUT_GROUP_ID,
-  ZOTERO_API_KEY,
-  ZENODO_ACCESS_TOKEN,
-} = process.env;
+const { OUTPUT_GROUP_ID, ZOTERO_API_KEY, ZENODO_ACCESS_TOKEN } = process.env;
 
 const defaultOutputData = {
   verbose: true,
@@ -47,5 +43,6 @@ export const createRecord = async (data) => {
     note: `This output was added by ${firstName} ${lastName} on ${new Date()}`,
     // Default Info
     ...defaultOutputData,
+    enclose: true,
   });
 };

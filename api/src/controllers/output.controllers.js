@@ -1,4 +1,5 @@
 import Output from "../database/models/output";
+import User from "../database/models/user";
 import { sendEmail } from "../helpers/sendEmail";
 import { formatAuthorsString, createCitation } from "../helpers/formatString";
 import { listCollections } from "../helpers/zotero";
@@ -92,13 +93,36 @@ export const createOutput = async (req, res) => {
   }
 };
 
-export const fetchOutput = async (req, res) => {
+export const fetchMyOutput = async (req, res) => {
   try {
-    const response =
-      req.user.role === "Administrator"
-        ? await Output.find()
-        : await Output.find({ userId: req.user.id });
-    return res.status(200).json({ data: response.reverse(), statusCode: 200 });
+    const response = await Output.find({ userId: req.user.id });
+    return res.status(200).json({
+      count: response.length,
+      data: response.reverse(),
+      statusCode: 200,
+    });
+  } catch (error) {
+    const { message, status = 400 } = error;
+    return res.status(status).json({ message, statusCode: status });
+  }
+};
+
+export const fetchAllOutput = async (req, res) => {
+  try {
+    const response = await Output.find();
+    const user = await User.find().select([
+      "firstName",
+      "lastName",
+      "profilePhotoURL",
+    ]);
+    return res.status(200).json({
+      count: response.length,
+      data: {
+        user,
+        output: response.reverse(),
+      },
+      statusCode: 200,
+    });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });

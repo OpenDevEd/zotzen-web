@@ -40,7 +40,9 @@ const UserSidebar = () => {
             <h1 className="text-lg">
               Welcome {`${userInformation.lastName || ""} `} !
             </h1>
-            <p className="uppercase text-xs">{`${userInformation.role || ""} `}</p>
+            <p className="uppercase text-xs">{`${
+              userInformation.role || ""
+            } `}</p>
           </div>
           {[
             {
@@ -62,6 +64,15 @@ const UserSidebar = () => {
             },
             {
               key: "nav-3",
+              title: "All Created Records",
+              description: "List of all Zotero / Zenodo Records",
+              icon: Icons.MenuIcon,
+              active: true,
+              path: "/all-outputs",
+              action: () => handleNavigation("/all-outputs"),
+            },
+            {
+              key: "nav-4",
               title: "Users",
               description: "List of all users",
               icon: Icons.MenuIcon,
@@ -71,7 +82,7 @@ const UserSidebar = () => {
               action: () => handleNavigation("/users"),
             },
             {
-              key: "nav-6",
+              key: "nav-5",
               title: "Logout",
               icon: Icons.LogoutIcon,
               action: handleLogout,

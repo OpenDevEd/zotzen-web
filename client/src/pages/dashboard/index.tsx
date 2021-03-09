@@ -96,7 +96,7 @@ const Dashboard = () => {
     values,
     errors,
     handleSubmit,
-    setErrors,
+    // setErrors,
     handleChange,
     setFieldValue,
     resetForm,

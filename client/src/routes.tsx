@@ -9,6 +9,7 @@ const Logout = React.lazy(() => import("./pages/auth/logout"))
 const AuthorizeUser = React.lazy(() => import("./pages/auth/authorizeUser"))
 const DashboardPage = React.lazy(() => import("./pages/dashboard"))
 const OutputPage = React.lazy(() => import("./pages/outputs"))
+const AllOutputPage = React.lazy(() => import("./pages/allOutputs"))
 const UsersPage = React.lazy(() => import("./pages/users"))
 
 const AppRoutes = () => {
@@ -22,6 +23,9 @@ const AppRoutes = () => {
             </Route>
             <Route path="/outputs">
               <OutputPage />
+            </Route>
+            <Route path="/all-outputs">
+              <AllOutputPage />
             </Route>
             <Route path="/users">
               <UsersPage />
