@@ -9,7 +9,7 @@ const defaultOutputData = {
   verbose: true,
   zotero_api_key: ZOTERO_API_KEY,
   zenodo_access_token: ZENODO_ACCESS_TOKEN,
-  zenodo_sandbox: ZENODO_SANDBOX,
+  zenodo_sandbox: ZENODO_SANDBOX || false, 
   institution: "EdTech Hub",
   language: "en",
   rights: "Creative Commons Attribution 4.0 International", 
