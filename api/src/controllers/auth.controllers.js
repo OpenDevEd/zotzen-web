@@ -16,7 +16,6 @@ export const callBack = async (req, res) => {
       lastName: user.lastName,
       photo: user.profilePhotoURL,
     };
-    console.log(payload);
     const token = await generateToken(payload);
     await loginActivity.create({ userId: user._id });
     return res.redirect(`${APP_FRONTEND_URL}/authorize/${token}`);
