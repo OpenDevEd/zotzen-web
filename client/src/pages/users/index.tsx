@@ -48,7 +48,6 @@ const Outputs = () => {
     const res: any = await axios.put(`/user/${selectedUser}`, {
       ...values,
     })
-    console.log(">>>>>>>>>", res)
     handleCancel()
   }
 
