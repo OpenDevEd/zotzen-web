@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "test": "jest --collect-coverage",
@@ -30,8 +30,8 @@
     "morgan": "~1.10.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "zotero-lib": "^1.0.34",
-    "zotzen-lib": "^1.0.61"
+    "zotero-lib": "^1.0.66",
+    "zotzen-lib": "^1.0.66"
   },
   "devDependencies": {
     "@babel/cli": "7.12.10",
