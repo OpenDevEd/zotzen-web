@@ -16,7 +16,9 @@ export const listCollections = async () => {
   let categories = await zoterolibIns.collections({
     key: OUTPUT_CATEGORY_KEY,
     terse: true,
+    top: true
   });
+  console.log(">>>>>>", categories);
   categories = await filterOutputCategories(categories);
   return categories;
 };
