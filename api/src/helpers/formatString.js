@@ -43,5 +43,5 @@ export const createCitation = async (data) => {
   });
   //remove last comma
   authorsList = authorsList.replace(/,\s*$/, "");
-  return `${authorsList} (${year}). ${title}. ${categoryName} ${reportNumber}. DOI: ${DOI} Available at ${kerko_url}. Available under Creative Commons Attribution 4.0 International, https://creativecommons.org/licenses/by/4.0/.`;
+  return `${authorsList} (${year}). ${title}. ${categoryName} ${reportNumber}. DOI: https://doi.org/${DOI} Available at ${kerko_url}. Available under Creative Commons Attribution 4.0 International, https://creativecommons.org/licenses/by/4.0/.`;
 };
