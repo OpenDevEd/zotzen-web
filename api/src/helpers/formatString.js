@@ -38,8 +38,8 @@ export const createCitation = async (data) => {
   const year = new Date(date).getFullYear();
   let authorsList = "";
 
-  await authors.map((author) => {
-    authorsList += ` ${author.lastName}, ${author.firstName[0].toUpperCase()}.,`;
+  await authors.map((author, index) => {
+    authorsList += ` ${author.lastName}, ${author.firstName[0].toUpperCase()}${(index==authors.length-2 && authorsList.length != 2)?"., &":".,"}`;
   });
   //remove last comma
   authorsList = authorsList.replace(/,\s*$/, "");
