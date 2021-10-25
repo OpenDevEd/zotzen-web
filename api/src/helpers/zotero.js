@@ -18,7 +18,6 @@ export const listCollections = async () => {
     terse: true,
     top: true
   });
-  console.log(">>>>>>", categories);
   categories = await filterOutputCategories(categories);
   return categories;
 };
