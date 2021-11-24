@@ -28,7 +28,7 @@ const MyOutputs = () => {
       })
       setOutputs(data)
       setLoading(false)
-    } catch (err) {
+    } catch (err: any) {
       message.error(err.message || err)
     } finally {
       setLoading(false)

@@ -3,6 +3,7 @@ import { message, Spin, Table, Menu, Dropdown, Button, Avatar } from "antd"
 import { DownOutlined } from "@ant-design/icons"
 import UserLayout from "../../components/Layout/UserLayout"
 import { axios } from "../../services"
+import PopUpModal from "./PopUpModal"
 
 interface UnknownObject {
   [key: string]: any
@@ -12,6 +13,17 @@ const AllOutputs = () => {
   const [isLoading, setLoading] = useState(true)
   const [users, setUsers] = useState<UnknownObject[]>([])
   const [outputs, setOutputs] = useState<UnknownObject[]>([])
+  const [selectedOutPut, setSelectedOutPut] = useState<UnknownObject[]>([])
+  const [showEditModal, setIsModalVisible] = useState(false)
+
+  // checkbox changes start here
+  const handleEdit = async (id: any) => {
+    setSelectedOutPut([id, Math.random()])
+    setIsModalVisible(true)
+  }
+  const handleCancel = () => {
+    setIsModalVisible(false)
+  }
 
   const fetchData = async () => {
     try {
@@ -24,7 +36,7 @@ const AllOutputs = () => {
       setUsers(data.user)
       setOutputs(outputData)
       setLoading(false)
-    } catch (err) {
+    } catch (err: any) {
       message.error(err.message || err)
     } finally {
       setLoading(false)
@@ -68,6 +80,16 @@ const AllOutputs = () => {
         <Menu.Item key="5">Reserve new DOI</Menu.Item>
         <Menu.Item key="6" onClick={() => handleCopyToClipboard(id)}>
           Copy citation
+        </Menu.Item>
+
+        {/* erick added */}
+        <Menu.Item
+          key="7"
+          onClick={() => {
+            handleEdit(id)
+          }}
+        >
+          Tags
         </Menu.Item>
       </Menu>
     )
@@ -117,23 +139,33 @@ const AllOutputs = () => {
   ]
 
   return (
-    <UserLayout>
-      <div>
+    <>
+      <UserLayout>
         <div>
-          <h1 className="uppercase font-thin">Created Outputs</h1>
-          <p className="text-xs text-gray-500">List of All Outputs</p>
-        </div>
-      </div>
-      <div className="mt-6">
-        {isLoading ? (
-          <div style={{ textAlign: "center" }}>
-            <Spin tip="Loading..." size="large"></Spin>
+          <div>
+            <h1 className="uppercase font-thin">Created Outputs</h1>
+            <p className="text-xs text-gray-500">List of All Outputs</p>
           </div>
-        ) : (
-          <Table dataSource={outputs} columns={columns} />
-        )}
-      </div>
-    </UserLayout>
+        </div>
+        <div className="mt-6">
+          {isLoading ? (
+            <div style={{ textAlign: "center" }}>
+              <Spin tip="Loading..." size="large"></Spin>
+            </div>
+          ) : (
+            <Table dataSource={outputs} columns={columns} />
+          )}
+        </div>
+      </UserLayout>
+      {selectedOutPut && (
+        <PopUpModal
+          outPutId={selectedOutPut[0]}
+          refreshModal={selectedOutPut[1]}
+          isVisible={showEditModal}
+          handleCancel={handleCancel}
+        />
+      )}
+    </>
   )
 }
 

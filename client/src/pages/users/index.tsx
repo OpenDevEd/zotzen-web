@@ -35,7 +35,7 @@ const Outputs = () => {
       })
       setOptions(data)
       setLoading(false)
-    } catch (err) {
+    } catch (err: any) {
       message.error(err.message || err)
     } finally {
       setLoading(false)
@@ -45,6 +45,7 @@ const Outputs = () => {
     setIsModalVisible(true)
   }
   const handleOk = async () => {
+    // eslint-disable-next-line
     const res: any = await axios.put(`/user/${selectedUser}`, {
       ...values,
     })

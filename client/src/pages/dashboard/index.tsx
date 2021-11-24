@@ -56,7 +56,7 @@ const Dashboard = () => {
         "/output/categories"
       )
       setOptions(categories)
-    } catch (err) {
+    } catch (err: any) {
       message.error(err.message || err)
     } finally {
       setLoading(false)
@@ -80,7 +80,7 @@ const Dashboard = () => {
       resetForm({
         values: INITIAL_VALUES,
       })
-    } catch (err) {
+    } catch (err: any) {
       message.error(err.message || err)
     } finally {
       setSubmitting(false)

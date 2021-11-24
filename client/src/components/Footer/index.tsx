@@ -1,12 +1,12 @@
-import React from 'react';
-import Moment from 'react-moment';
-import moment from 'moment';
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
-import LogoIcon from '../../assets/Icons/logo.png';
+import React from "react"
+import Moment from "react-moment"
+import moment from "moment"
+import classnames from "classnames"
+import { Link } from "react-router-dom"
+import LogoIcon from "../../assets/Icons/logo.png"
 
 const AppFooter = () => {
-  const footerClasses = classnames('bg-red-light w-full');
+  const footerClasses = classnames("bg-red-light w-full")
   return (
     <footer className={footerClasses}>
       <div className="container mx-auto">
@@ -26,23 +26,44 @@ const AppFooter = () => {
               <ul>
                 <li className="mb-2 font-medium">About</li>
                 <li className="my-1">
-                  <Link to="/">
-                  About EdTech Hub
+                  <Link
+                    to={{
+                      pathname: "https://edtechhub.org/about-edtech-hub/",
+                    }}
+                    target="_blank"
+                  >
+                    About EdTech Hub
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
-                  Team
+                  <Link
+                    to={{
+                      pathname:
+                        "https://edtechhub.org/about-edtech-hub/directors-team",
+                    }}
+                    target="_blank"
+                  >
+                    Team
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
-                  Contact us
+                  <Link
+                    to={{
+                      pathname: "https://edtechhub.org/contact-us/",
+                    }}
+                    target="_blank"
+                  >
+                    Contact us
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
-                  Careers
+                  <Link
+                    to={{
+                      pathname: "https://edtechhub.org/jobs",
+                    }}
+                    target="_blank"
+                  >
+                    Careers
                   </Link>
                 </li>
               </ul>
@@ -51,22 +72,42 @@ const AppFooter = () => {
               <ul>
                 <li className="mb-2 font-medium">Our work</li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname: "http://docs.edtechhub.org/lib/",
+                    }}
+                    target="_blank"
+                  >
                     Evidence Library
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname: "https://edtechhub.org/helpdesk",
+                    }}
+                    target="_blank"
+                  >
                     Helpdesk
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname: "https://edtechhub.org/blog",
+                    }}
+                    target="_blank"
+                  >
                     Blog
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname: "https://edtechhub.org/newsletter/",
+                    }}
+                    target="_blank"
+                  >
                     Newsletter
                   </Link>
                 </li>
@@ -76,17 +117,35 @@ const AppFooter = () => {
               <ul>
                 <li className="font-medium">Site</li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname:
+                        "https://edtechhub.org/about-edtech-hub/directors-team/#",
+                    }}
+                    target="_blank"
+                  >
                     Privacy policy
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/frequently-asked-questions">
+                  <Link
+                    to={{
+                      pathname:
+                        "https://edtechhub.org/frequently-asked-questions",
+                    }}
+                    target="_blank"
+                  >
                     Cookies policy
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/frequently-asked-questions">
+                  <Link
+                    to={{
+                      pathname:
+                        "https://edtechhub.org/frequently-asked-questions",
+                    }}
+                    target="_blank"
+                  >
                     Terms and conditions
                   </Link>
                 </li>
@@ -94,21 +153,22 @@ const AppFooter = () => {
             </div>
           </div>
           <div className="grid lg:grid-cols-1 sm:grid-cols-1 content-center mt-12">
-            <div className=" flex items-start justify-center px-2">
-                
-            </div>
+            <div className=" flex items-start justify-center px-2"></div>
           </div>
           <div className="grid lg:grid-cols-1 sm:grid-cols-1 content-center mt-12">
             <div className=" flex items-start justify-center px-2">
               <ul>
-                <li className="mb-2 font-medium">EdTech Hub &copy; <Moment date={moment()} format="YYYY" />. Creative Commons Attribution 4.0 International License.</li>
+                <li className="mb-2 font-medium">
+                  EdTech Hub &copy; <Moment date={moment()} format="YYYY" />.
+                  Creative Commons Attribution 4.0 International License.
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default AppFooter;
+export default AppFooter

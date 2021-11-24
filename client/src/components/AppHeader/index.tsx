@@ -5,11 +5,11 @@ import LogoIcon from "../../assets/Icons/logo.png"
 
 const NAV_LINKS = [
   { name: "HOME", path: "/" },
-  { name: "ABOUT US", path: "" },
+  { name: "ABOUT US", path: "https://edtechhub.org/about-edtech-hub/" },
   { name: "TOOLS", path: "/dashboard" },
   { name: "EVIDENCE", path: "/outputs" },
-  { name: "BLOG", path: "" },
-  { name: "CONTACT US", path: "" },
+  { name: "BLOG", path: "https://edtechhub.org/blog/" },
+  { name: "CONTACT US", path: "https://edtechhub.org/contact-us/" },
 ]
 
 interface Props {}
@@ -35,7 +35,14 @@ const AppHeader: React.FC<Props> = () => {
                   }
                 )
                 return (
-                  <Link to={page.path} key={page.name} className={className}>
+                  <Link
+                    key={page.name}
+                    className={className}
+                    to={{
+                      pathname: `${page.path}`,
+                    }}
+                    target="_blank"
+                  >
                     <p>{page.name}</p>
                   </Link>
                 )
