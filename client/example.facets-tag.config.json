@@ -1,0 +1,24 @@
+[
+    {
+        "id": "XYZ123",
+        "name": "Facet One",
+        "children": [
+            {
+                "id": "XYZ123",
+                "name": "Facet Two"
+            },
+            {
+                "id": "XYZ123",
+                "name": "Facet Three"
+            },
+            {
+                "id": "XYZ123",
+                "name": "Facet Four"
+            }
+        ]
+    },
+    {
+        "id": "XYZ123",
+        "name": "Facet Five"
+    }
+]
