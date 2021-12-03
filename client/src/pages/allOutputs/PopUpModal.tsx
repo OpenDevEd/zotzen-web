@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from "react"
 import { Modal, Spin } from "antd"
+import checkboxData from "../../utils/facets-tag.config.json"
 
 interface UnknownObject {
   [key: string]: any
 }
 
 const PopUpModal = (props: any) => {
-  console.log(props.outPutId)
-
   const [submitData, setSubmitData] = useState<UnknownObject[]>([])
   const [selectedData, setSelectedData] = useState<UnknownObject[]>([])
   const inputEl = useRef<any>([])
@@ -15,12 +14,13 @@ const PopUpModal = (props: any) => {
   console.log(outPutId, selectedData)
 
   useEffect(() => {
-    fetch("https://erick-mulindi-chat-server.glitch.me/messages")
-      .then((data) => data.json())
-      .then((data) => {
-        setSelectedData(data)
-      })
-      .catch((error) => console.log(error))
+    // fetch("https://erick-mulindi-chat-server.glitch.me/messages")
+    //   .then((data) => data.json())
+    //   .then((data) => {
+    //     setSelectedData(data)
+    //   })
+    //   .catch((error) => console.log(error))
+    setSelectedData(checkboxData)
   }, [refreshModal])
   const handleOk = () => {
     setSelectedData([])
@@ -37,23 +37,27 @@ const PopUpModal = (props: any) => {
   const checkChildBox = (e: any) => {
     let childId = e.target.id
     let checkedItems = selectedData.map((parent) => {
-      return parent.children.map((child: any) => {
-        if (child.id === childId && e.target.checked === true) {
-          if (!submitData.includes(parent.id)) {
-            submitData.push(parent.id)
+      if (parent.children) {
+        return parent.children.map((child: any) => {
+          if (child.id === childId && e.target.checked === true) {
+            if (!submitData.includes(parent.id)) {
+              submitData.push(parent.id)
+            }
+            submitData.push(child.id)
+            inputEl.current[parent.id].checked = true
+            return child
           }
-          submitData.push(child.id)
-          inputEl.current[parent.id].checked = true
-          return child
-        }
-        if (child.id === childId && e.target.checked === false) {
-          let filteredData = submitData.filter((item) => item !== e.target.id)
-          setSubmitData(filteredData)
-          return child
-        } else {
-          return child
-        }
-      })
+          if (child.id === childId && e.target.checked === false) {
+            let filteredData = submitData.filter((item) => item !== e.target.id)
+            setSubmitData(filteredData)
+            return child
+          } else {
+            return child
+          }
+        })
+      } else {
+        return false
+      }
     })
     selectedData.forEach((parent, index) => {
       parent["children"] = checkedItems[index]
