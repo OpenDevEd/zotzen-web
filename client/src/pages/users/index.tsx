@@ -3,8 +3,11 @@ import { message, Spin, Table, Tag, Modal, Select } from "antd"
 import * as yup from "yup"
 import { useFormik } from "formik"
 import { EditOutlined } from "@ant-design/icons"
+import { useQuery } from "react-query"
+
 import UserLayout from "../../components/Layout/UserLayout"
-import { axios } from "../../services"
+import Requests from "../../services/requests"
+
 
 const { Option } = Select
 interface UnknownObject {
@@ -20,27 +23,31 @@ const validationSchema = yup.object().shape({
 })
 
 const Outputs = () => {
-  const [isLoading, setLoading] = useState(true)
   const [options, setOptions] = useState<UnknownObject[]>([])
   const [selectedRole, setselectedRole] = useState<string>()
   const [selectedUser, setselectedUser] = useState<string>()
   const [showEditModal, setIsModalVisible] = useState(false)
-  const fetchData = async () => {
-    try {
-      let { data }: UnknownObject = await axios.get("/user")
-      data = data.map(function (el: any, index: number) {
-        var o = Object.assign({}, el)
-        o.key = index
-        return o
-      })
-      setOptions(data)
-      setLoading(false)
-    } catch (err) {
-      message.error(err.message || err)
-    } finally {
-      setLoading(false)
-    }
-  }
+// const fetchData = async () => {
+//   try {
+//     let { data }: UnknownObject = await axios.get("/user")
+//     data = data.map(function (el: any, index: number) {
+//       var o = Object.assign({}, el)
+//       o.key = index
+//       return o
+//     })
+//     setOptions(data)
+//     setLoading(false)
+//   } catch (err) {
+//     message.error(err.message || err)
+//   } finally {
+//     setLoading(false)
+//   }
+// }
+
+const { data, isSuccess, isLoading } = useQuery("get user", () =>
+  Requests.getUser()
+)
+
   const handleEdit = () => {
     setIsModalVisible(true)
   }

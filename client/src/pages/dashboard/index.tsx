@@ -6,7 +6,7 @@ import { useFormik } from "formik"
 import CustomButton from "../../components/Button"
 import InputLabel from "../../components/InputLabel"
 import UserLayout from "../../components/Layout/UserLayout"
-import { axios } from "../../services"
+
 
 const { Option } = Select
 

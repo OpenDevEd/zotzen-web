@@ -1,14 +1,11 @@
 import { config } from "dotenv";
-import passport from "passport";
+import passport, { session } from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 import User from "../database/models/user";
 
 config();
-const {
-  GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET,
-  GOOGLE_CALLBACK_URL,
-} = process.env;
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } =
+  process.env;
 
 passport.use(
   "google",
