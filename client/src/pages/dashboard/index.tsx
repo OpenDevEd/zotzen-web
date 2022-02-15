@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
+
 import { Input, Select, message } from "antd"
 
 import * as yup from "yup"
 import { useFormik } from "formik"
+import { useQuery, useMutation } from "react-query"
+
 import CustomButton from "../../components/Button"
 import InputLabel from "../../components/InputLabel"
 import UserLayout from "../../components/Layout/UserLayout"
+import Requests from "../../services/requests"
+
 
 
 const { Option } = Select
@@ -46,45 +51,71 @@ const Dashboard = () => {
     "Central Services",
     "Other",
   ]
-  const [isLoading, setLoading] = useState(true)
-  const [isSubmitting, setSubmitting] = useState(false)
   const [resMessage, setResMessage] = useState<string>()
   const [options, setOptions] = useState<UnknownObject[]>([])
-  const fetchData = async () => {
-    try {
-      const { categories }: UnknownObject = await axios.get(
-        "/output/categories"
-      )
-      setOptions(categories)
-    } catch (err) {
-      message.error(err.message || err)
-    } finally {
-      setLoading(false)
-    }
-  }
-  const onSubmit = async () => {
+// const fetchData = async () => {
+//   try {
+//     const { categories }: UnknownObject = await axios.get(
+//       "/output/categories"
+//     )
+//     setOptions(categories)
+//   } catch (err) {
+//     message.error(err.message || err)
+//   } finally {
+//     setLoading(false)
+//   }
+// }
+
+const { data, isSuccess, isLoading } = useQuery("categories", () =>
+  Requests.getCategories()
+)
+
+if (isSuccess && data) {
+  setOptions(data)
+}
+
+
+  const {
+    mutate,
+    isLoading: cIsLoading,
+    // data: cData,
+    isSuccess: cIsSuccess,
+  } = useMutation((citation: Record<string, any>) =>
+    Requests.createOutput(citation)
+  )
+
+  const onSubmit = () => {
     setResMessage(undefined)
-    setSubmitting(true)
+// setSubmitting(true)
+
     const category = options.find((item) => item.key === values.category)
-    const data = {
+    const citation = {
       ...values,
       category: undefined,
       categoryName: category?.name,
       categoryNamekey: category?.key,
     }
-    try {
-      const res: any = await axios.post("/output", data)
-      const { citation } = res.data
-      //set the message form response here.
-      setResMessage(citation)
+    mutate({ citation })
+    if (cIsSuccess) {
+      // setResMessage(cData?.data.citation)
       resetForm({
         values: INITIAL_VALUES,
       })
-    } catch (err) {
-      message.error(err.message || err)
-    } finally {
-      setSubmitting(false)
     }
+// try {
+//   const res: any = await axios.post("/output", data)
+//   const { citation } = res.data
+//   //set the message form response here.
+//   setResMessage(citation)
+//   resetForm({
+//     values: INITIAL_VALUES,
+//   })
+// } catch (err) {
+//   message.error(err.message || err)
+// } finally {
+//   setSubmitting(false)
+// }
+
   }
 
   const copyToClipboard = (msg: any) => {
@@ -105,9 +136,10 @@ const Dashboard = () => {
     validationSchema,
     onSubmit,
   })
-  useEffect(() => {
-    fetchData()
-  }, [])
+// useEffect(() => {
+//   fetchData()
+// }, [])
+
 
   return (
     <UserLayout>
@@ -209,8 +241,8 @@ const Dashboard = () => {
             size="medium"
             classes="text-lg"
             onClick={handleSubmit}
-            loading={isSubmitting}
-            disabled={isSubmitting || isLoading}
+            loading={cIsLoading}
+            disabled={cIsLoading || isLoading}
           >
             Create Record
           </CustomButton>
@@ -238,7 +270,7 @@ const Dashboard = () => {
                 </div>
               </div>
             )}
-            {isSubmitting &&
+            {cIsLoading &&
               `This can take up to 10 seconds to complete, please be patient...`}
           </p>
         </div>

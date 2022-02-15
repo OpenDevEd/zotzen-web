@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react"
-import { message, Spin, Table, Tag, Modal, Select } from "antd"
+import React, { useState } from "react"
+import { Spin, Table, Tag, Modal, Select } from "antd"
+
 import * as yup from "yup"
 import { useFormik } from "formik"
 import { EditOutlined } from "@ant-design/icons"
@@ -24,6 +25,8 @@ const validationSchema = yup.object().shape({
 
 const Outputs = () => {
   const [options, setOptions] = useState<UnknownObject[]>([])
+let user: Record<string, any>[] = []
+
   const [selectedRole, setselectedRole] = useState<string>()
   const [selectedUser, setselectedUser] = useState<string>()
   const [showEditModal, setIsModalVisible] = useState(false)
@@ -47,20 +50,35 @@ const Outputs = () => {
 const { data, isSuccess, isLoading } = useQuery("get user", () =>
   Requests.getUser()
 )
+if (isSuccess && data) {
+  user = data
+  user = [
+    ...user,
+    user?.map((el: any, index: number) => {
+      let o = Object.assign({}, el)
+      o.key = index
+      return o
+    }),
+  ]
+  setOptions(user)
+}
+
 
   const handleEdit = () => {
     setIsModalVisible(true)
   }
   const handleOk = async () => {
-    const res: any = await axios.put(`/user/${selectedUser}`, {
-      ...values,
-    })
+// const res: any = await axios.put(`/user/${selectedUser}`, {
+//   ...values,
+// })
+
     handleCancel()
   }
 
   const handleCancel = () => {
-    setIsModalVisible(false)
-    fetchData()
+setIsModalVisible(false)
+
+
   }
 
   const { values, setFieldValue } = useFormik({
@@ -68,9 +86,10 @@ const { data, isSuccess, isLoading } = useQuery("get user", () =>
     validationSchema,
     onSubmit: handleOk,
   })
-  useEffect(() => {
-    fetchData()
-  }, [])
+// useEffect(() => {
+//   fetchData()
+// }, [])
+
 
   const columns = [
     {

@@ -7,33 +7,46 @@ import {
   Dropdown,
   Button,
 } from "antd"
+import { useQuery } from "react-query"
+
 import { DownOutlined } from "@ant-design/icons"
 import UserLayout from "../../components/Layout/UserLayout"
-import { axios } from "../../services"
+import Requests from "../../services/requests"
 
-interface UnknownObject {
-  [key: string]: any
-}
+
+
 
 const MyOutputs = () => {
-  const [isLoading, setLoading] = useState(true)
-  const [outputs, setOutputs] = useState<UnknownObject[]>([])
-  const fetchData = async () => {
-    try {
-      let { data }: UnknownObject = await axios.get("/output")
-      data = data.map(function (el: any, index: number) {
-        var o = Object.assign({}, el)
-        o.key = index
-        return o
-      })
-      setOutputs(data)
-      setLoading(false)
-    } catch (err) {
-      message.error(err.message || err)
-    } finally {
-      setLoading(false)
-    }
+  let outputs: Array<Record<string, any>> = []
+  const { data, isSuccess, isLoading } = useQuery("outputs", () =>
+    Requests.getOutput()
+  )
+
+  if (isSuccess && data) {
+    outputs = data
+    outputs = [...outputs, outputs.map((el: any, index: number) => {
+      let o = Object.assign({}, el)
+      o.key = index
+      return o
+    })]
   }
+// const fetchData = async () => {
+//   try {
+//     let { data }: UnknownObject = await axios.get("/output")
+//     data = data.map(function (el: any, index: number) {
+//       var o = Object.assign({}, el)
+//       o.key = index
+//       return o
+//     })
+//     setOutputs(data)
+//     setLoading(false)
+//   } catch (err) {
+//     message.error(err.message || err)
+//   } finally {
+//     setLoading(false)
+//   }
+// }
+
   const handleCopyToClipboard = (rowId: any) => {
     const outputRow = outputs.filter((output) => output._id === rowId)
     navigator.clipboard.writeText(outputRow[0].citation || "")
@@ -52,9 +65,10 @@ const MyOutputs = () => {
       </Menu>
     )
   }
-  useEffect(() => {
-    fetchData()
-  }, [])
+// useEffect(() => {
+//   fetchData()
+// }, [])
+
 
   const columns = [
     {

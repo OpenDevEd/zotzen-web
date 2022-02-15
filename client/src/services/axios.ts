@@ -84,7 +84,7 @@ class Axios {
 
   get(
     path: string,
-    callback: (args: Array<Record<string, any>> | []) => void
+    callback: (args: Record<string, any>) => void
   ): Promise<void> {
     return this.axiosInstance
       .request({
@@ -97,8 +97,8 @@ class Axios {
 
   post(
     path: string,
-    payload: Array<Record<string, any>>,
-    callback: (args: Array<Record<string, any>> | []) => void
+    payload: Array<Record<string, any>> | Record<string, any>,
+    callback: (args: Record<string, any>) => void
   ): Promise<void> {
     return this.axiosInstance
       .request({
@@ -112,8 +112,8 @@ class Axios {
 
   put(
     path: string,
-    payload: Array<Record<string, any>>,
-    callback: (args: Array<Record<string, any>> | []) => void
+    payload: Array<Record<string, any>> | Record<string, any>,
+    callback: (args: Record<string, any>) => void
   ): Promise<void> {
     return this.axiosInstance
       .request({
@@ -127,8 +127,8 @@ class Axios {
 
   patch(
     path: string,
-    payload: Array<Record<string, any>>,
-    callback: (args: Array<Record<string, any>> | []) => void
+    payload: Array<Record<string, any>> | Record<string, any>,
+    callback: (args: Record<string, any>) => void
   ): Promise<void> {
     return this.axiosInstance
       .request({
