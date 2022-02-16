@@ -1,23 +1,14 @@
 import React, { useState } from "react"
-
 import { Input, Select, message } from "antd"
-
 import * as yup from "yup"
 import { useFormik } from "formik"
 import { useQuery, useMutation } from "react-query"
-
 import CustomButton from "../../components/Button"
 import InputLabel from "../../components/InputLabel"
 import UserLayout from "../../components/Layout/UserLayout"
 import Requests from "../../services/requests"
 
-
-
 const { Option } = Select
-
-interface UnknownObject {
-  [key: string]: any
-}
 
 const INITIAL_VALUES = {
   title: "",
@@ -43,7 +34,7 @@ const validationSchema = yup.object().shape({
     .required("* required"),
 })
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const team = [
     "Research",
     "Engagement",
@@ -51,72 +42,25 @@ const Dashboard = () => {
     "Central Services",
     "Other",
   ]
-  const [resMessage, setResMessage] = useState<string>()
-  const [options, setOptions] = useState<UnknownObject[]>([])
-// const fetchData = async () => {
-//   try {
-//     const { categories }: UnknownObject = await axios.get(
-//       "/output/categories"
-//     )
-//     setOptions(categories)
-//   } catch (err) {
-//     message.error(err.message || err)
-//   } finally {
-//     setLoading(false)
-//   }
-// }
+  const [resMessage, ] = useState<string>()
+  let options: Array<Record<string, any>> = []
 
-const { data, isSuccess, isLoading } = useQuery("categories", () =>
-  Requests.getCategories()
-)
+  const { data, isSuccess, isLoading } = useQuery<any>("categories", () =>
+    Requests.getCategories()
+  )
 
-if (isSuccess && data) {
-  setOptions(data)
-}
-
+  if (isSuccess && data) {
+    options = data?.categories
+  }
 
   const {
     mutate,
     isLoading: cIsLoading,
     // data: cData,
-    isSuccess: cIsSuccess,
+    // isSuccess: cIsSuccess,
   } = useMutation((citation: Record<string, any>) =>
     Requests.createOutput(citation)
   )
-
-  const onSubmit = () => {
-    setResMessage(undefined)
-// setSubmitting(true)
-
-    const category = options.find((item) => item.key === values.category)
-    const citation = {
-      ...values,
-      category: undefined,
-      categoryName: category?.name,
-      categoryNamekey: category?.key,
-    }
-    mutate({ citation })
-    if (cIsSuccess) {
-      // setResMessage(cData?.data.citation)
-      resetForm({
-        values: INITIAL_VALUES,
-      })
-    }
-// try {
-//   const res: any = await axios.post("/output", data)
-//   const { citation } = res.data
-//   //set the message form response here.
-//   setResMessage(citation)
-//   resetForm({
-//     values: INITIAL_VALUES,
-//   })
-// } catch (err) {
-//   message.error(err.message || err)
-// } finally {
-//   setSubmitting(false)
-// }
-
-  }
 
   const copyToClipboard = (msg: any) => {
     navigator.clipboard.writeText(msg)
@@ -134,12 +78,21 @@ if (isSuccess && data) {
   } = useFormik({
     initialValues: INITIAL_VALUES,
     validationSchema,
-    onSubmit,
-  })
-// useEffect(() => {
-//   fetchData()
-// }, [])
+    onSubmit: (_values) => {
+      const category = options.find((item) => item.key === _values.category)
+      const citation = {
+        ...category,
+        category: undefined,
+        categoryName: category?.name,
+        categoryNamekey: category?.key,
+      }
 
+      mutate({ citation })
+      resetForm({
+        values: INITIAL_VALUES,
+      })
+    },
+  })
 
   return (
     <UserLayout>
@@ -179,9 +132,9 @@ if (isSuccess && data) {
               loading={isLoading}
               onChange={(value) => setFieldValue("category", value)}
             >
-              {options.map((item) => (
+              {[...options]?.map((item) => (
                 <Option value={item.key} key={item.key}>
-                  {item.name}
+                  {item.name} 
                 </Option>
               ))}
             </Select>

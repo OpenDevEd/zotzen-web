@@ -1,13 +1,12 @@
 import React, { useState } from "react"
 import { Link, Redirect } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { Dropdown, Menu, Avatar, message, Spin } from "antd"
-import { UnknownObject } from "../../utils/types"
+// import { useDispatch } from "react-redux"
+import { Dropdown, Menu, Avatar, Spin } from "antd"
 
 const UserMenu = () => {
-  const distpach = useDispatch()
+  // const distpach = useDispatch()
 
-  const [loggingOut, setLogout] = useState(false)
+  const [loggingOut, ] = useState(false)
 
   const handleLogout = async () => {
     <Redirect to={'/logout'} />

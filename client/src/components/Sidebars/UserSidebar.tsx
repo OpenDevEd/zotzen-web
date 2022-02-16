@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { message, Avatar } from "antd"
+import React from "react"
+import {  Avatar } from "antd"
 import classnames from "classnames"
 import { useHistory, useLocation } from "react-router-dom"
 import { useQuery } from "react-query"
@@ -7,38 +7,23 @@ import Requests from "../../services/requests"
 
 import * as Icons from "../../assets/Icons"
 
-
-interface UnknownObject {
-  [key: string]: any
-}
-
 const UserSidebar = () => {
   const history = useHistory()
   const location = useLocation()
   const handleNavigation = (url: string) => history.push(url)
-const [userInformation, setUserInformation] = useState<Record<string, any>>({})
-
+  let userInformation: Record<string, any> = {}
 
   const handleLogout = async () => {
     window.location.href = `logout`
   }
-const { data, isSuccess } = useQuery("user info", () => Requests.getUserInfo())
 
-if (isSuccess && data) setUserInformation(data)
-// const getUserInfo = async () => {
-//   try {
-//     const userInformation: any = await axios.get("/auth/loggedin")
-//     setUserInformation(userInformation)
-//   } catch (err) {
-//     message.error(err.message || err)
-//   }
-// }
+  const { data, isSuccess } = useQuery<any>("user info", () =>
+    Requests.getUserInfo()
+  )
 
-// useEffect(() => {
-//   getUserInfo()
-// }, [])
-
-
+  if (isSuccess && data) {
+    userInformation = data
+  }
 
   return (
     <div>

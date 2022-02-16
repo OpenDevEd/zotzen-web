@@ -5,15 +5,10 @@ import * as yup from "yup"
 import { useFormik } from "formik"
 import { EditOutlined } from "@ant-design/icons"
 import { useQuery } from "react-query"
-
 import UserLayout from "../../components/Layout/UserLayout"
 import Requests from "../../services/requests"
 
-
 const { Option } = Select
-interface UnknownObject {
-  [key: string]: any
-}
 
 const INITIAL_VALUES = {
   role: "",
@@ -24,72 +19,54 @@ const validationSchema = yup.object().shape({
 })
 
 const Outputs = () => {
-  const [options, setOptions] = useState<UnknownObject[]>([])
-let user: Record<string, any>[] = []
+  const [options, setOptions] = useState<Array<Record<string, any>>>([])
+  let user: Record<string, any>[] = []
 
-  const [selectedRole, setselectedRole] = useState<string>()
-  const [selectedUser, setselectedUser] = useState<string>()
+  const [selectedRole, setselectedRole] = useState<string>("")
+  const [, setselectedUser] = useState<string>("")
   const [showEditModal, setIsModalVisible] = useState(false)
-// const fetchData = async () => {
-//   try {
-//     let { data }: UnknownObject = await axios.get("/user")
-//     data = data.map(function (el: any, index: number) {
-//       var o = Object.assign({}, el)
-//       o.key = index
-//       return o
-//     })
-//     setOptions(data)
-//     setLoading(false)
-//   } catch (err) {
-//     message.error(err.message || err)
-//   } finally {
-//     setLoading(false)
-//   }
-// }
 
-const { data, isSuccess, isLoading } = useQuery("get user", () =>
-  Requests.getUser()
-)
-if (isSuccess && data) {
-  user = data
-  user = [
-    ...user,
-    user?.map((el: any, index: number) => {
-      let o = Object.assign({}, el)
-      o.key = index
-      return o
-    }),
-  ]
-  setOptions(user)
-}
+  const { data, isSuccess, isLoading } = useQuery("get user", () =>
+    Requests.getUser()
+  )
+  if (isSuccess && data) {
+    user = data
+    user = [
+      ...user,
+      user?.map((el: any, index: number) => {
+        let o = Object.assign({}, el)
+        o.key = index
+        return o
+      }),
+    ]
+    setOptions(user)
+  }
 
+  // const { isLoading: hIsLoading, mutate } = useMutation((userSelected: string, values: Record<string, any>) =>
+  //   Requests.handleOk(user, values)
+  // )
 
   const handleEdit = () => {
     setIsModalVisible(true)
   }
   const handleOk = async () => {
-// const res: any = await axios.put(`/user/${selectedUser}`, {
-//   ...values,
-// })
+    // const res: any = await axios.put(`/user/${selectedUser}`, {
+    //   ...values,
+    // })
 
     handleCancel()
   }
 
   const handleCancel = () => {
-setIsModalVisible(false)
-
-
+    setIsModalVisible(false)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { values, setFieldValue } = useFormik({
     initialValues: INITIAL_VALUES,
     validationSchema,
     onSubmit: handleOk,
   })
-// useEffect(() => {
-//   fetchData()
-// }, [])
-
 
   const columns = [
     {

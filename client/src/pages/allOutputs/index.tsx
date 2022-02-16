@@ -1,34 +1,30 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { message, Spin, Table, Menu, Dropdown, Button, Avatar } from "antd"
 import { DownOutlined } from "@ant-design/icons"
+import { useQuery } from "react-query"
+
 import UserLayout from "../../components/Layout/UserLayout"
-import { axios } from "../../services"
+import Requests from "../../services/requests"
 
-interface UnknownObject {
-  [key: string]: any
-}
+const AllOutputs: React.FC = () => {
+  let users: Array<Record<string, any>> = []
 
-const AllOutputs = () => {
-  const [isLoading, setLoading] = useState(true)
-  const [users, setUsers] = useState<UnknownObject[]>([])
-  const [outputs, setOutputs] = useState<UnknownObject[]>([])
+  let outputs: Array<Record<string, any>> = []
 
-  const fetchData = async () => {
-    try {
-      let { data }: UnknownObject = await axios.get("/output/all")
-      let outputData = data.output.map(function (el: any, index: number) {
-        var o = Object.assign({}, el)
+  const { data, isLoading, isSuccess } = useQuery<any>("all outputs", () =>
+    Requests.getAllOutputs()
+  )
+
+  if (isSuccess && data) {
+    users = [...users, data?.data?.user]
+    outputs = [
+      ...outputs,
+      data?.output.map((el: any, index: number) => {
+        let o = Object.assign({}, el)
         o.key = index
         return o
-      })
-      setUsers(data.user)
-      setOutputs(outputData)
-      setLoading(false)
-    } catch (err) {
-      message.error(err.message || err)
-    } finally {
-      setLoading(false)
-    }
+      }),
+    ]
   }
 
   const getUserInfo = (userId: any) => {
@@ -72,9 +68,6 @@ const AllOutputs = () => {
       </Menu>
     )
   }
-  useEffect(() => {
-    fetchData()
-  }, [])
 
   const columns = [
     {

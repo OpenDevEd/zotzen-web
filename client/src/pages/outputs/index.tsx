@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import {
   message,
   Spin,
@@ -13,39 +13,20 @@ import { DownOutlined } from "@ant-design/icons"
 import UserLayout from "../../components/Layout/UserLayout"
 import Requests from "../../services/requests"
 
-
-
-
 const MyOutputs = () => {
   let outputs: Array<Record<string, any>> = []
-  const { data, isSuccess, isLoading } = useQuery("outputs", () =>
+  const { data, isSuccess, isLoading } = useQuery<any>("output", () =>
     Requests.getOutput()
   )
 
   if (isSuccess && data) {
-    outputs = data
+    outputs = data?.data
     outputs = [...outputs, outputs.map((el: any, index: number) => {
       let o = Object.assign({}, el)
       o.key = index
       return o
     })]
   }
-// const fetchData = async () => {
-//   try {
-//     let { data }: UnknownObject = await axios.get("/output")
-//     data = data.map(function (el: any, index: number) {
-//       var o = Object.assign({}, el)
-//       o.key = index
-//       return o
-//     })
-//     setOutputs(data)
-//     setLoading(false)
-//   } catch (err) {
-//     message.error(err.message || err)
-//   } finally {
-//     setLoading(false)
-//   }
-// }
 
   const handleCopyToClipboard = (rowId: any) => {
     const outputRow = outputs.filter((output) => output._id === rowId)
@@ -65,9 +46,6 @@ const MyOutputs = () => {
       </Menu>
     )
   }
-// useEffect(() => {
-//   fetchData()
-// }, [])
 
 
   const columns = [

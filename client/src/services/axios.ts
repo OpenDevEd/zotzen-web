@@ -5,6 +5,7 @@ import axios, {
   AxiosError,
 } from "axios"
 import { message } from "antd"
+import {msg} from './http-message'
 
 // export const axiosInstance = axios.create({
 //   baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -36,7 +37,10 @@ class Axios {
       },
       (error) => Promise.reject(error)
     )
-
+    service.interceptors.response.use(
+      this.handleSuccessResponse,
+      this.handleErrorResponse
+    )
     this.axiosInstance = service
   }
 
@@ -48,7 +52,7 @@ class Axios {
       case 200:
         return response
       default:
-        message.success(`${response.data.status}: ${response.data.message}`)
+        // message.success(`${response.data.status}`)
         break
     }
     return Promise.resolve(response)
@@ -58,28 +62,29 @@ class Axios {
     if (error && error.response) {
       switch (error.response.status) {
         case 400:
-          message.error(`${error.response.data.message}`)
+          message.error(`${error.response.status} - ${msg.ACTION_BAD_REQUEST}`)
           break
         case 401:
-          message.error(`${error.response.data.message}`)
-          window.location.href = "/"
+          message.error(`${error.response.status} - ${msg.ACTION_UNAUTHORIZED}`)
+          // window.location.href = "/"
           break
         case 403:
-          message.error(`${error.response.data.message}`)
+          message.error(`${error.response.status} - ${msg.ACTION_FORBIDDEN}`)
           break
         case 404:
-          message.error(`${error.response.data.message}`)
+          message.error(`${error.response.status} - ${msg.ACTION_NOT_FOUND}`)
           break
         case 500:
-          message.error(`${error.response.data.message}`)
+          message.error(`${error.response.status} - ${msg.ACTION_INTERNAL_SERVER}`)
           break
         default:
           message.error(
-            `${error.response.statusText}: ${error.response.statusText}`
+            `${error.response.status} - ${msg.ACTION_UNKNOWN}`
           )
           break
       }
     }
+    return Promise.reject(error)
   }
 
   get(

@@ -22,8 +22,12 @@ class Request {
     return Axios.get("/output", (res) => res)
   }
 
-  handleOk(selectedUser: string, values: Record<string, any>[]): Promise<void> {
-    return Axios.put(`/user${selectedUser}`, { ...values }, (res) => res)
+  getAllOutputs(): Promise<void> {
+    return Axios.get('/output/all', res => res)
+  }
+
+  handleOk(selectedUser: string, values: Record<string, any>): Promise<any> {
+    return Axios.put(`/user/${selectedUser}`, values, (res) => res)
   }
 }
 
