@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { name: "CONTACT US", path: "" },
 ]
 
-interface Props {}
+interface Props { }
 const AppHeader: React.FC<Props> = () => {
   const location = useLocation()
 
