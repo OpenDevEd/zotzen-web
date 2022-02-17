@@ -1,4 +1,3 @@
-import passport from "passport";
 import { generateToken } from "../helpers/token";
 import loginActivity from "../database/models/login_activity";
 import { config } from "dotenv";

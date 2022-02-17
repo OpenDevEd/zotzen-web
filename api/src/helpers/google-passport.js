@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-import passport, { session } from "passport";
+import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 import User from "../database/models/user";
 
