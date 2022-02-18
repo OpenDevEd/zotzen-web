@@ -1,2 +1,4 @@
 *.css
 *.svg
+src/reportWebVitals.ts
+*config.js

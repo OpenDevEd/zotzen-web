@@ -1,9 +1,12 @@
+/* eslint-disable quotes */
+/* eslint-disable global-require */
+/* eslint-disable import/no-extraneous-dependencies */
 // postcss.config.js
-const purgecss = require('@fullhuman/postcss-purgecss')({
+const purgecss = require("@fullhuman/postcss-purgecss")({
   // Specify the paths to all of the template files in your project
   content: [
-    './public/**/*.html',
-    './src/**/*.js',
+    "./public/**/*.html",
+    "./src/**/*.js",
     // etc.
   ],
 
@@ -13,8 +16,8 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
 
 module.exports = {
   plugins: [
-    require('tailwindcss'),
-    require('autoprefixer'),
-    ...(process.env.NODE_ENV === 'production' ? [purgecss] : []),
+    require("tailwindcss"),
+    require("autoprefixer"),
+    ...(process.env.NODE_ENV === "production" ? [purgecss] : []),
   ],
 };

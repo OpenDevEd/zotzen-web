@@ -1,56 +1,58 @@
-import React, { useState } from "react"
-import { Input, Select, message } from "antd"
-import * as yup from "yup"
-import { useFormik } from "formik"
-import { useQuery, useMutation } from "react-query"
-import CustomButton from "../../components/Button"
-import InputLabel from "../../components/InputLabel"
-import UserLayout from "../../components/Layout/UserLayout"
-import Requests from "../../services/requests"
+import React, { useState } from 'react';
+import { Input, Select, message } from 'antd';
+import * as yup from 'yup';
+import { useFormik } from 'formik';
+import { useQuery, useMutation } from 'react-query';
+import CustomButton from '../../components/Button';
+import InputLabel from '../../components/InputLabel';
+import UserLayout from '../../components/Layout/UserLayout';
+import Requests from '../../services/requests';
 
-const { Option } = Select
+const { Option } = Select;
 
 const INITIAL_VALUES = {
-  title: "",
-  author: "",
-  category: "",
-  reportNumber: "",
-  date: "",
-  primaryTeam: "",
-  documentURL: "",
-}
+  title: '',
+  author: '',
+  category: '',
+  reportNumber: '',
+  date: '',
+  primaryTeam: '',
+  documentURL: '',
+};
 
 const validationSchema = yup.object().shape({
-  title: yup.string().required("* required"),
-  author: yup.string().required("* required"),
-  category: yup.string().required("* required"),
+  title: yup.string().required('* required'),
+  author: yup.string().required('* required'),
+  category: yup.string().required('* required'),
   reportNumber: yup.string(),
-  date: yup.date().required("* required"),
-  primaryTeam: yup.string().required("* required"),
+  date: yup.date().required('* required'),
+  primaryTeam: yup.string().required('* required'),
   documentURL: yup
     .string()
-    .url("* invalid url")
-    .matches(/docs.google.com/, "Is not Google Docs URL")
-    .required("* required"),
-})
+    .url('* invalid url')
+    .matches(/docs.google.com/, 'Is not Google Docs URL')
+    .required('* required'),
+});
 
 const Dashboard: React.FC = () => {
   const team = [
-    "Research",
-    "Engagement",
-    "Innovation",
-    "Central Services",
-    "Other",
-  ]
-  const [resMessage, ] = useState<string>()
-  let options: Array<Record<string, any>> = []
+    'Research',
+    'Engagement',
+    'Innovation',
+    'Central Services',
+    'Other',
+  ];
+  const [resMessage] = useState<string>();
+  let options: Array<Record<string, any>> = [];
 
-  const { data, isSuccess, isLoading } = useQuery<any>("categories", () =>
-    Requests.getCategories()
-  )
+  const {
+    data,
+    isSuccess,
+    isLoading,
+  } = useQuery<any>('categories', () => Requests.getCategories());
 
   if (isSuccess && data) {
-    options = data?.categories
+    options = data?.categories;
   }
 
   const {
@@ -58,14 +60,12 @@ const Dashboard: React.FC = () => {
     isLoading: cIsLoading,
     // data: cData,
     // isSuccess: cIsSuccess,
-  } = useMutation((citation: Record<string, any>) =>
-    Requests.createOutput(citation)
-  )
+  } = useMutation((citation: Record<string, any>) => Requests.createOutput(citation));
 
-  const copyToClipboard = (msg: any) => {
-    navigator.clipboard.writeText(msg)
-    message.success("Copied to clipboard. You can paste it in a document")
-  }
+  const copyToClipboard = (msg: string): void => {
+    navigator.clipboard.writeText(msg);
+    message.success('Copied to clipboard. You can paste it in a document');
+  };
 
   const {
     values,
@@ -79,20 +79,20 @@ const Dashboard: React.FC = () => {
     initialValues: INITIAL_VALUES,
     validationSchema,
     onSubmit: (_values) => {
-      const category = options.find((item) => item.key === _values.category)
+      const category = options.find((item) => item.key === _values.category);
       const citation = {
         ...category,
         category: undefined,
         categoryName: category?.name,
         categoryNamekey: category?.key,
-      }
+      };
 
-      mutate({ citation })
+      mutate({ citation });
       resetForm({
         values: INITIAL_VALUES,
-      })
+      });
     },
-  })
+  });
 
   return (
     <UserLayout>
@@ -109,7 +109,7 @@ const Dashboard: React.FC = () => {
                 className="floating-input rounded-md"
                 placeholder="Title"
                 value={values.title}
-                onChange={handleChange("title")}
+                onChange={handleChange('title')}
               />
             </InputLabel>
             <span className="text-sm text-red-500">{errors.title}</span>
@@ -120,7 +120,7 @@ const Dashboard: React.FC = () => {
                 className="floating-input rounded-md"
                 placeholder="Last Name, First Name; Last Name, First Name"
                 value={values.author}
-                onChange={handleChange("author")}
+                onChange={handleChange('author')}
               />
             </InputLabel>
             <span className="text-sm text-red-500">{errors.author}</span>
@@ -130,11 +130,11 @@ const Dashboard: React.FC = () => {
               className="floating-input rounded-md"
               placeholder="Select Category"
               loading={isLoading}
-              onChange={(value) => setFieldValue("category", value)}
+              onChange={(value) => setFieldValue('category', value)}
             >
               {[...options]?.map((item) => (
                 <Option value={item.key} key={item.key}>
-                  {item.name} 
+                  {item.name}
                 </Option>
               ))}
             </Select>
@@ -146,7 +146,7 @@ const Dashboard: React.FC = () => {
                 className="floating-input rounded-md"
                 placeholder="Report number (Optional)"
                 value={values.reportNumber}
-                onChange={handleChange("reportNumber")}
+                onChange={handleChange('reportNumber')}
               />
             </InputLabel>
             <span className="text-sm text-red-500">{errors.reportNumber}</span>
@@ -158,7 +158,7 @@ const Dashboard: React.FC = () => {
                 className="floating-input rounded-md"
                 placeholder="Date"
                 value={values.date}
-                onChange={handleChange("date")}
+                onChange={handleChange('date')}
               />
             </InputLabel>
             <span className="text-sm text-red-500">{errors.date}</span>
@@ -167,7 +167,7 @@ const Dashboard: React.FC = () => {
             <Select
               className="floating-input rounded-md"
               placeholder="Select Primary Team"
-              onChange={(value) => setFieldValue("primaryTeam", value)}
+              onChange={(value) => setFieldValue('primaryTeam', value)}
             >
               {team.map((item) => (
                 <Option value={item} key={item}>
@@ -183,7 +183,7 @@ const Dashboard: React.FC = () => {
                 className="floating-input rounded-md"
                 placeholder="https://docs.google.com/"
                 value={values.documentURL}
-                onChange={handleChange("documentURL")}
+                onChange={handleChange('documentURL')}
               />
             </InputLabel>
             <span className="text-sm text-red-500">{errors.documentURL}</span>
@@ -196,6 +196,7 @@ const Dashboard: React.FC = () => {
             onClick={handleSubmit}
             loading={cIsLoading}
             disabled={cIsLoading || isLoading}
+            buttonType="button"
           >
             Create Record
           </CustomButton>
@@ -214,6 +215,7 @@ const Dashboard: React.FC = () => {
                 </span>
                 <div>
                   <CustomButton
+                    buttonType="button"
                     size="small"
                     classes="text-sm"
                     onClick={() => copyToClipboard(resMessage)}
@@ -223,13 +225,13 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             )}
-            {cIsLoading &&
-              `This can take up to 10 seconds to complete, please be patient...`}
+            {cIsLoading
+              && 'This can take up to 10 seconds to complete, please be patient...'}
           </p>
         </div>
       </div>
     </UserLayout>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

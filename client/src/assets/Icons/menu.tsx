@@ -1,6 +1,8 @@
-import React from "react"
+/* eslint-disable linebreak-style */
+/* eslint-disable max-len */
+import React from 'react';
 
-export const MenuIcon = () => (
+export const MenuIcon: React.FC = () => (
   <svg
     width="15"
     height="15"
@@ -28,4 +30,4 @@ export const MenuIcon = () => (
       </clipPath>
     </defs>
   </svg>
-)
+);

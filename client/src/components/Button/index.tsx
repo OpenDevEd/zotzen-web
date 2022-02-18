@@ -11,7 +11,7 @@ interface Props {
   shadow?: boolean;
   loading?: boolean;
   children?: string | string[] | React.ReactElement | React.ReactElement[];
-  buttonType?: 'button' | 'reset' | 'submit' | undefined;
+  buttonType: 'button' | 'reset' | 'submit';
   disabled?: boolean;
   type?: 'primary' | 'success' | 'sedondary' | 'danger' | 'default';
   rounded?: boolean;
@@ -32,7 +32,7 @@ const CustomButton: React.FC<Props> = ({
   rounded = true,
 }) => {
   const styles = classnames('p-2 font-medium  text-white px-3', classes, {
-    rounded: rounded,
+    rounded,
     'w-full': block,
     'p-3': size === 'large',
     'p-2': size === 'medium',
@@ -41,10 +41,10 @@ const CustomButton: React.FC<Props> = ({
     ...(disabled
       ? { 'bg-gray-300': true }
       : {
-          'bg-red-primary': type === 'primary',
-          'bg-opacity-0': type === 'default',
-          'bg-blue-primary': type === 'sedondary',
-        }),
+        'bg-red-primary': type === 'primary',
+        'bg-opacity-0': type === 'default',
+        'bg-blue-primary': type === 'sedondary',
+      }),
   });
   return (
     <button
@@ -55,7 +55,7 @@ const CustomButton: React.FC<Props> = ({
     >
       <div>
         {loading ? (
-          <Spin className='bg-transparent'>{children || title}</Spin>
+          <Spin className="bg-transparent">{children || title}</Spin>
         ) : (
           children || title
         )}

@@ -21,7 +21,9 @@ const CustomLink: React.FC<Props> = ({
     return (
       <Link to={to || ''} className={classnames(className, 'relative')}>
         {count && count > 0 && (
-          <div className="absolute top-0 right-0 bg-red-primary w-4 h-4 text-xs rounded-full text-white flex flex-row justify-center items-center">
+          <div className="absolute top-0 right-0 bg-red-primary w-4 h-4
+           text-xs rounded-full text-white flex flex-row justify-center items-center"
+          >
             {count}
           </div>
         )}
