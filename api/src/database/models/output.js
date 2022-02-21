@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 const outputSchema = new Schema(
   {
     userId: {
@@ -39,4 +39,4 @@ const outputSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Output", outputSchema);
+export default mongoose.model('Output', outputSchema);

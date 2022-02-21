@@ -1,14 +1,17 @@
-import { config } from "dotenv";
-import passport from "passport";
-import GoogleStrategy from "passport-google-oauth20";
-import User from "../database/models/user";
+import { config } from 'dotenv';
+import passport from 'passport';
+import GoogleStrategy from 'passport-google-oauth20';
+import User from '../database/models/user';
 
 config();
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } =
-  process.env;
+const {
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL,
+} = process.env;
 
 passport.use(
-  "google",
+  'google',
   new GoogleStrategy(
     {
       clientID: GOOGLE_CLIENT_ID,
@@ -27,7 +30,7 @@ passport.use(
             lastName: profile.name.givenName,
             googleId: profile.id,
             profilePhotoURL: profile.photos[0].value,
-            role: "Standard",
+            role: 'Standard',
           }
         );
         return done(null, user, { statusCode: 200 });
