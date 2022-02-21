@@ -1,16 +1,16 @@
 import React from 'react';
 import { Avatar } from 'antd';
 import classnames from 'classnames';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import Requests from '../../services/requests';
 
 import * as Icons from '../../assets/Icons';
 
 const UserSidebar: React.FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
-  const handleNavigation = (url: string): void => history.push(url);
+  const handleNavigation = (url: string): void => navigate(url);
   let userInformation: Record<string, any> = {};
 
   const handleLogout = async (): Promise<void> => {

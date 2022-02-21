@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import {
   Dropdown, Menu, Avatar, Spin,
 } from 'antd';
@@ -8,7 +8,7 @@ const UserMenu: React.FC = () => {
   const [loggingOut] = useState(false);
 
   const handleLogout = async (): Promise<any> => {
-    <Redirect to="/logout" />;
+    <Navigate to="/logout" />;
   };
 
   const overlay = useMemo((): React.ReactElement => (

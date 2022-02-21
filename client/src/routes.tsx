@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppLayout } from './components/Layout';
 import PageLoading from './components/ActivityIndicator/PageLoading';
 
@@ -15,31 +14,17 @@ const UsersPage = React.lazy(() => import('./pages/users'));
 const AppRoutes: React.FC = () => (
   <Suspense fallback={<PageLoading />}>
     <Router>
-      <Switch>
-        <AppLayout>
-          <Route path="/dashboard">
-            <DashboardPage />
-          </Route>
-          <Route path="/outputs">
-            <OutputPage />
-          </Route>
-          <Route path="/all-outputs">
-            <AllOutputPage />
-          </Route>
-          <Route path="/users">
-            <UsersPage />
-          </Route>
-          <Route path="/authorize/:token">
-            <AuthorizeUser />
-          </Route>
-          <Route path="/logout">
-            <Logout />
-          </Route>
-          <Route path="/">
-            <LoginPage />
-          </Route>
-        </AppLayout>
-      </Switch>
+      <AppLayout>
+        <Routes>
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="outputs" element={<OutputPage />} />
+          <Route path="all-outputs" element={<AllOutputPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="authorize/:token" element={<AuthorizeUser />} />
+          <Route path="logout" element={<Logout />} />
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+      </AppLayout>
     </Router>
   </Suspense>
 );
