@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import * as controller from "../controllers/auth.controllers";
+import passportGoogle from "../helpers/google-passport";
 import { verifyToken as authenticateUser } from "../middleware/auth.middleware";
 const routes = Router();
 
