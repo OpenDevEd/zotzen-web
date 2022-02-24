@@ -46,26 +46,28 @@ const Dashboard: React.FC = () => {
   let options: Array<Record<string, any>> = [];
 
   const {
-    data,
+    data: dataa,
     isSuccess,
     isLoading,
   } = useQuery<any>('categories', () => Requests.getCategories());
 
-  if (isSuccess && data) {
-    options = data?.categories;
+  if (isSuccess && dataa) {
+    options = dataa?.categories;
   }
 
   const {
     mutate,
     isLoading: cIsLoading,
-    // data: cData,
-    // isSuccess: cIsSuccess,
-  } = useMutation((citation: Record<string, any>) => Requests.createOutput(citation));
+    data: cData,
+    isSuccess: cIsSuccess,
+  }: any = useMutation((data: Record<string, any>) => Requests.createOutput(data));
 
   const copyToClipboard = (msg: string): void => {
     navigator.clipboard.writeText(msg);
     message.success('Copied to clipboard. You can paste it in a document');
   };
+
+  if (cIsSuccess) console.log(cData, 'returned data');
 
   const {
     values,
@@ -80,14 +82,14 @@ const Dashboard: React.FC = () => {
     validationSchema,
     onSubmit: (_values) => {
       const category = options.find((item) => item.key === _values.category);
-      const citation = {
-        ...category,
+      const data = {
+        ...values,
         category: undefined,
         categoryName: category?.name,
         categoryNamekey: category?.key,
       };
 
-      mutate({ citation });
+      mutate(data);
       resetForm({
         values: INITIAL_VALUES,
       });
@@ -203,7 +205,7 @@ const Dashboard: React.FC = () => {
         </form>
         <div className="w-6/12 my-2">
           <p className="text-base text-black-300">
-            {resMessage && (
+            {cIsSuccess && (
               <div>
                 <span>
                   <strong>
@@ -211,14 +213,14 @@ const Dashboard: React.FC = () => {
                     document:
                   </strong>
                   <br />
-                  {resMessage}
+                  {cIsSuccess ? cData?.data?.citation : ''}
                 </span>
                 <div>
                   <CustomButton
                     buttonType="button"
                     size="small"
                     classes="text-sm"
-                    onClick={() => copyToClipboard(resMessage)}
+                    onClick={() => copyToClipboard(cIsSuccess ? cData?.data?.citation : '')}
                   >
                     Copy
                   </CustomButton>

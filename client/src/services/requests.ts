@@ -16,7 +16,7 @@ class Request {
   }
 
   createOutput(payload: Record<string, any>): Promise<void> {
-    return Axios.post('/output', payload, (res) => message.success(res.message));
+    return Axios.post('/output', payload, (res) => res);
   }
 
   getOutput(): Promise<void> {

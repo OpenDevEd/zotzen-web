@@ -67,6 +67,7 @@ const UserSidebar: React.FC = () => {
               description: 'List of all Zotero / Zenodo Records',
               icon: Icons.MenuIcon,
               active: true,
+              hide: userInformation.role !== 'Administrator',
               path: '/all-outputs',
               action: () => handleNavigation('/all-outputs'),
             },

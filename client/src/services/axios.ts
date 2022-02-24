@@ -43,7 +43,8 @@ class Axios {
   handleSuccessResponse(response: AxiosResponse): AxiosResponse | Promise<any> {
     switch (response.data.status) {
       case 201:
-        message.success(response.data.message);
+        // message.success(response.data.message);
+        return response;
         break;
       case 200:
         return response;
