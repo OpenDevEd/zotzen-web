@@ -21,16 +21,16 @@ const validationSchema = yup.object().shape({
 });
 
 const Outputs: React.FC = () => {
-  const [options, setOptions] = useState<Array<Record<string, any>>>([]);
+  // const [options, setOptions] = useState<Array<Record<string, any>>>([]);
   let user: Record<string, any>[] = [];
 
   const [selectedRole, setselectedRole] = useState<string>('');
   const [, setselectedUser] = useState<string>('');
   const [showEditModal, setIsModalVisible] = useState(false);
 
-  const { data, isSuccess, isLoading } = useQuery('get user', () => Requests.getUser());
+  const { data, isSuccess, isLoading } = useQuery<any>('get user', () => Requests.getUser());
   if (isSuccess && data) {
-    user = data;
+    user = data?.data;
     user = [
       ...user,
       user?.map((el: any, index: number) => {
@@ -39,7 +39,7 @@ const Outputs: React.FC = () => {
         return o;
       }),
     ];
-    setOptions(user);
+    // setOptions(user);
   }
 
   // const { isLoading: hIsLoading,
@@ -132,7 +132,8 @@ const Outputs: React.FC = () => {
               <Spin tip="Loading..." size="large" />
             </div>
           ) : (
-            <Table dataSource={options} columns={columns} />
+              // eslint-disable-next-line react/jsx-indent
+              <Table dataSource={user} columns={columns} />
           )}
         </div>
       </UserLayout>

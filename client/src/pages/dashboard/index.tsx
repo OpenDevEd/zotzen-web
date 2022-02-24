@@ -67,8 +67,6 @@ const Dashboard: React.FC = () => {
     message.success('Copied to clipboard. You can paste it in a document');
   };
 
-  if (cIsSuccess) console.log(cData, 'returned data');
-
   const {
     values,
     errors,

@@ -10,7 +10,6 @@ import Requests from '../../services/requests';
 
 const AllOutputs: React.FC = () => {
   let users: Array<Record<string, any>> = [];
-
   let outputs: Array<Record<string, any>> = [];
 
   const {
@@ -20,10 +19,12 @@ const AllOutputs: React.FC = () => {
   } = useQuery<any>('all outputs', () => Requests.getAllOutputs());
 
   if (isSuccess && data) {
-    users = [...users, data?.data?.user];
+    users = data?.data?.user;
+    outputs = data?.data?.output;
+    // users = [...users, users];
     outputs = [
       ...outputs,
-      data?.output.map((el: any, index: number) => {
+      outputs.map((el: any, index: number) => {
         const o = { ...el };
         o.key = index;
         return o;
@@ -127,7 +128,11 @@ const AllOutputs: React.FC = () => {
             <Spin tip="Loading..." size="large" />
           </div>
         ) : (
-          <Table dataSource={outputs} columns={columns} />
+            // eslint-disable-next-line react/jsx-indent
+            <Table
+              dataSource={outputs}
+              columns={columns}
+            />
         )}
       </div>
     </UserLayout>
