@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-import uniqueValidator from "mongoose-unique-validator";
+import mongoose, { Schema } from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
 const userSchema = new Schema(
   {
     firstName: String,
@@ -17,7 +17,7 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      defaultValue: "Standard",
+      defaultValue: 'Standard',
     },
   },
   { timestamps: true }
@@ -47,4 +47,4 @@ userSchema.statics.findOneOrCreate = function findOneOrCreate(condition, doc) {
   });
 };
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model('User', userSchema);

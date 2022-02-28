@@ -1,107 +1,121 @@
-import React, { useEffect, useState } from "react"
-import { message, Spin, Table, Tag, Modal, Select } from "antd"
-import * as yup from "yup"
-import { useFormik } from "formik"
-import { EditOutlined } from "@ant-design/icons"
-import UserLayout from "../../components/Layout/UserLayout"
-import { axios } from "../../services"
+import React, { useState } from 'react';
+import {
+  Spin, Table, Tag, Modal, Select,
+} from 'antd';
 
-const { Option } = Select
-interface UnknownObject {
-  [key: string]: any
-}
+import * as yup from 'yup';
+import { useFormik } from 'formik';
+import { EditOutlined } from '@ant-design/icons';
+import { useQuery } from 'react-query';
+import UserLayout from '../../components/Layout/UserLayout';
+import Requests from '../../services/requests';
+
+const { Option } = Select;
 
 const INITIAL_VALUES = {
-  role: "",
-}
+  role: '',
+};
 
 const validationSchema = yup.object().shape({
-  role: yup.string().required("* required"),
-})
+  role: yup.string().required('* required'),
+});
 
-const Outputs = () => {
-  const [isLoading, setLoading] = useState(true)
-  const [options, setOptions] = useState<UnknownObject[]>([])
-  const [selectedRole, setselectedRole] = useState<string>()
-  const [selectedUser, setselectedUser] = useState<string>()
-  const [showEditModal, setIsModalVisible] = useState(false)
-  const fetchData = async () => {
-    try {
-      let { data }: UnknownObject = await axios.get("/user")
-      data = data.map(function (el: any, index: number) {
-        var o = Object.assign({}, el)
-        o.key = index
-        return o
-      })
-      setOptions(data)
-      setLoading(false)
-    } catch (err) {
-      message.error(err.message || err)
-    } finally {
-      setLoading(false)
-    }
-  }
-  const handleEdit = () => {
-    setIsModalVisible(true)
-  }
-  const handleOk = async () => {
-    const res: any = await axios.put(`/user/${selectedUser}`, {
-      ...values,
-    })
-    handleCancel()
+const Outputs: React.FC = () => {
+  // const [options, setOptions] = useState<Array<Record<string, any>>>([]);
+  let user: Record<string, any>[] = [];
+
+  const [selectedRole, setselectedRole] = useState<string>('');
+  const [, setselectedUser] = useState<string>('');
+  const [showEditModal, setIsModalVisible] = useState(false);
+
+  const { data, isSuccess, isLoading } = useQuery<any>('get user', () => Requests.getUser());
+  if (isSuccess && data) {
+    user = data?.data;
+    user = [
+      ...user,
+      user?.map((el: any, index: number) => {
+        const o = { ...el };
+        o.key = index;
+        return o;
+      }),
+    ];
+    // setOptions(user);
   }
 
-  const handleCancel = () => {
-    setIsModalVisible(false)
-    fetchData()
-  }
+  // const { isLoading: hIsLoading,
+  // mutate
+  // } = useMutation((userSelected: string, values: Record<string, any>) =>
+  //   Requests.handleOk(user, values)
+  // )
 
+  const handleEdit = (): void => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = (): void => {
+    setIsModalVisible(false);
+  };
+
+  const handleOk = async (): Promise<void> => {
+    // const res: any = await axios.put(`/user/${selectedUser}`, {
+    //   ...values,
+    // })
+
+    handleCancel();
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { values, setFieldValue } = useFormik({
     initialValues: INITIAL_VALUES,
     validationSchema,
     onSubmit: handleOk,
-  })
-  useEffect(() => {
-    fetchData()
-  }, [])
+  });
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (firstName: any, row: any) => {
-        return `${row.firstName} ${row.lastName}`
-      },
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      render: (firstName: any, row: any) => `${row.firstName} ${row.lastName}`,
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
+      title: 'Role',
+      dataIndex: 'role',
+      key: 'role',
       render: (role: any, row: any) => (
         <>
-          <Tag color={row.role === "Standard" ? "geekblue" : "green"}>
-            {row.role} {"  "}
+          <Tag color={row.role === 'Standard' ? 'geekblue' : 'green'}>
+            {row.role}
+            {' '}
+            {'  '}
           </Tag>
           <span
-            style={{ cursor: "pointer" }}
+            style={{ cursor: 'pointer' }}
             onClick={() => {
-              handleEdit()
-              setselectedRole(row.role)
-              setselectedUser(row._id)
+              handleEdit();
+              setselectedRole(row.role);
+              setselectedUser(row._id);
             }}
+            onKeyDown={() => {
+              handleEdit();
+              setselectedRole(row.role);
+              setselectedUser(row._id);
+            }}
+            role="button"
+            tabIndex={0}
+
           >
             <EditOutlined />
           </span>
         </>
       ),
     },
-  ]
+  ];
 
   return (
     <>
@@ -114,11 +128,12 @@ const Outputs = () => {
         </div>
         <div className="mt-6">
           {isLoading ? (
-            <div style={{ textAlign: "center" }}>
-              <Spin tip="Loading..." size="large"></Spin>
+            <div style={{ textAlign: 'center' }}>
+              <Spin tip="Loading..." size="large" />
             </div>
           ) : (
-            <Table dataSource={options} columns={columns} />
+              // eslint-disable-next-line react/jsx-indent
+              <Table dataSource={user} columns={columns} />
           )}
         </div>
       </UserLayout>
@@ -133,13 +148,13 @@ const Outputs = () => {
             <Select
               className="floating-input rounded-md"
               placeholder="Select Role"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               defaultValue={selectedRole}
-              onChange={(value) => setFieldValue("role", value)}
+              onChange={(value) => setFieldValue('role', value)}
             >
               {[
-                { key: 1, name: "Standard" },
-                { key: 2, name: "Administrator" },
+                { key: 1, name: 'Standard' },
+                { key: 2, name: 'Administrator' },
               ].map((item) => (
                 <Option value={item.name} key={item.key}>
                   {item.name}
@@ -150,7 +165,7 @@ const Outputs = () => {
         </form>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default Outputs
+export default Outputs;

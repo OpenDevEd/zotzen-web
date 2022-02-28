@@ -1,5 +1,5 @@
-import zotzenlib from "zotzen-lib";
-import { config } from "dotenv";
+import zotzenlib from 'zotzen-lib';
+import { config } from 'dotenv';
 
 config();
 
@@ -15,13 +15,13 @@ const defaultOutputData = {
   verbose: true,
   zotero_api_key: ZOTERO_API_KEY,
   zenodo_access_token: ZENODO_ACCESS_TOKEN,
-  zenodo_sandbox: ZENODO_SANDBOX === "true" ? true : false,
-  institution: "EdTech Hub",
-  language: "en",
-  rights: "Creative Commons Attribution 4.0 International",
+  zenodo_sandbox: ZENODO_SANDBOX === 'true' ? true : false,
+  institution: 'EdTech Hub',
+  language: 'en',
+  rights: 'Creative Commons Attribution 4.0 International',
   kerko_url: KERKO_URL,
-  tags: ["_r:AddedByZotZen"],
-  description: "An output of the EdTech Hub, https://edtechhub.org",
+  tags: ['_r:AddedByZotZen'],
+  description: 'An output of the EdTech Hub, https://edtechhub.org',
 };
 
 export const createRecord = async (data) => {

@@ -1,4 +1,5 @@
-const CracoLessPlugin = require('craco-less');
+/* eslint-disable quotes */
+const CracoLessPlugin = require("craco-less-fix");
 
 module.exports = {
   plugins: [
@@ -8,8 +9,8 @@ module.exports = {
         lessLoaderOptions: {
           lessOptions: {
             modifyVars: {
-              '@primary-color': '#ff5c00',
-              '@link-color': '#ff5c00',
+              "@primary-color": "#ff5c00",
+              "@link-color": "#ff5c00",
             },
             javascriptEnabled: true,
           },

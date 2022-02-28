@@ -5,12 +5,10 @@ import AppFooter from '../Footer';
 interface Props {
   children?: string | string[] | React.ReactElement | React.ReactElement[];
 }
-export const AppLayout: React.FC<Props> = ({ children }) => {
-  return (
-    <>
-      {<AppHeader />}
-      {children}
-      {<AppFooter />}
-    </>
-  );
-};
+export const AppLayout: React.FC<Props> = ({ children }) => (
+  <>
+    <AppHeader />
+    {children}
+    <AppFooter />
+  </>
+);

@@ -1,7 +1,7 @@
-import User from "../database/models/user";
-import loginActivity from "../database/models/login_activity";
+import User from '../database/models/user';
+import loginActivity from '../database/models/login_activity';
 
-const allRoles = ["Standard", "Administrator"];
+const allRoles = ['Standard', 'Administrator'];
 
 export const listOfUsers = async (req, res) => {
   try {
@@ -35,7 +35,7 @@ export const updateUserRole = async (req, res) => {
     if (!userInfo) {
       return res
         .status(404)
-        .json({ message: "User not found", statusCode: 404 });
+        .json({ message: 'User not found', statusCode: 404 });
     }
     return res.status(200).json({ user: userInfo, statusCode: 200 });
   } catch (error) {
