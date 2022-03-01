@@ -1,172 +1,141 @@
-import React, { useEffect, useState } from "react"
-import { message, Spin, Table, Menu, Dropdown, Button, Avatar } from "antd"
-import { DownOutlined } from "@ant-design/icons"
-import UserLayout from "../../components/Layout/UserLayout"
-import { axios } from "../../services"
-import PopUpModal from "./PopUpModal"
+import React from 'react';
+import {
+  message, Spin, Table, Menu, Dropdown, Button, Avatar,
+} from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { useQuery } from 'react-query';
 
-interface UnknownObject {
-  [key: string]: any
-}
+import UserLayout from '../../components/Layout/UserLayout';
+import Requests from '../../services/requests';
 
-const AllOutputs = () => {
-  const [isLoading, setLoading] = useState(true)
-  const [users, setUsers] = useState<UnknownObject[]>([])
-  const [outputs, setOutputs] = useState<UnknownObject[]>([])
-  const [selectedOutPut, setSelectedOutPut] = useState<UnknownObject[]>([])
-  const [showEditModal, setIsModalVisible] = useState(false)
+const AllOutputs: React.FC = () => {
+  let users: Array<Record<string, any>> = [];
+  let outputs: Array<Record<string, any>> = [];
 
-  // checkbox changes start here
-  const handleEdit = async (id: any) => {
-    setSelectedOutPut([id, Math.random()])
-    setIsModalVisible(true)
-  }
-  const handleCancel = () => {
-    setIsModalVisible(false)
-  }
+  const {
+    data,
+    isLoading,
+    isSuccess,
+  } = useQuery<any>('all outputs', () => Requests.getAllOutputs());
 
-  const fetchData = async () => {
-    try {
-      let { data }: UnknownObject = await axios.get("/output/all")
-      let outputData = data.output.map(function (el: any, index: number) {
-        var o = Object.assign({}, el)
-        o.key = index
-        return o
-      })
-      setUsers(data.user)
-      setOutputs(outputData)
-      setLoading(false)
-    } catch (err: any) {
-      message.error(err.message || err)
-    } finally {
-      setLoading(false)
-    }
+  if (isSuccess && data) {
+    users = data?.data?.user;
+    outputs = data?.data?.output;
+    // users = [...users, users];
+    outputs = [
+      ...outputs,
+      outputs.map((el: any, index: number) => {
+        const o = { ...el };
+        o.key = index;
+        return o;
+      }),
+    ];
   }
 
-  const getUserInfo = (userId: any) => {
-    const user = users.filter((user) => user._id === userId)
+  const getUserInfo = (userId: string): Record<string, any> => {
+    const user = users.filter((userr): boolean => userr._id === userId);
     return {
       firstName: user[0].firstName,
       lastName: user[0].lastName,
       photo: user[0].profilePhotoURL,
-    }
-  }
+    };
+  };
 
-  const getLinkToEvidenceLibrary = (rowId: any) => {
-    const outputRow = outputs.filter((output) => output._id === rowId)
-    return outputRow[0].linkToLibrary
-  }
+  const getLinkToEvidenceLibrary = (rowId: string): string => {
+    const outputRow = outputs.filter((output): boolean => output._id === rowId);
+    return outputRow[0].linkToLibrary;
+  };
 
-  const handleCopyToClipboard = (rowId: any) => {
-    const outputRow = outputs.filter((output) => output._id === rowId)
-    navigator.clipboard.writeText(outputRow[0].citation || "")
-    message.success("Copied to clipboard. You can paste it in a document")
-  }
-  const menu = (id: any) => {
-    return (
-      <Menu>
-        <Menu.Item key="1">
-          <a
-            href={getLinkToEvidenceLibrary(id)}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Link to Library
-          </a>
-        </Menu.Item>
-        <Menu.Item key="2">Update status</Menu.Item>
-        <Menu.Item key="3">Activate DOI</Menu.Item>
-        <Menu.Item key="4">Update metadata</Menu.Item>
-        <Menu.Item key="5">Reserve new DOI</Menu.Item>
-        <Menu.Item key="6" onClick={() => handleCopyToClipboard(id)}>
-          Copy citation
-        </Menu.Item>
-
-        {/* erick added */}
-        <Menu.Item
-          key="7"
-          onClick={() => {
-            handleEdit(id)
-          }}
+  const handleCopyToClipboard = (rowId: string): void => {
+    const outputRow = outputs.filter((output) => output._id === rowId);
+    navigator.clipboard.writeText(outputRow[0].citation || '');
+    message.success('Copied to clipboard. You can paste it in a document');
+  };
+  const menu = (id: string): React.ReactElement => (
+    <Menu>
+      <Menu.Item key="1">
+        <a
+          href={getLinkToEvidenceLibrary(id)}
+          target="_blank"
+          rel="noreferrer"
         >
-          Tags
-        </Menu.Item>
-      </Menu>
-    )
-  }
-  useEffect(() => {
-    fetchData()
-  }, [])
+          Link to Library
+        </a>
+      </Menu.Item>
+      <Menu.Item key="2">Update status</Menu.Item>
+      <Menu.Item key="3">Activate DOI</Menu.Item>
+      <Menu.Item key="4">Update metadata</Menu.Item>
+      <Menu.Item key="5">Reserve new DOI</Menu.Item>
+      <Menu.Item key="6" onClick={() => handleCopyToClipboard(id)}>
+        Copy citation
+      </Menu.Item>
+    </Menu>
+  );
 
   const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
-      title: "DOI",
-      dataIndex: "doi",
-      key: "doi",
+      title: 'DOI',
+      dataIndex: 'doi',
+      key: 'doi',
     },
     {
-      title: "Created By",
-      dataIndex: "userId",
-      key: "createdBy",
-      render: (userId: any) => {
-        const { firstName, lastName, photo } = getUserInfo(userId)
+      title: 'Created By',
+      dataIndex: 'userId',
+      key: 'createdBy',
+      render: (userId: string) => {
+        const { firstName, lastName, photo } = getUserInfo(userId);
         return (
           <>
             <Avatar src={`${photo}`} alt="Profile" />
             &nbsp; &nbsp;
             {`${firstName} ${lastName}`}
           </>
-        )
+        );
       },
     },
     {
-      title: "Actions",
-      dataIndex: "_id",
-      key: "actions",
+      title: 'Actions',
+      dataIndex: '_id',
+      key: 'actions',
       render: (id: any) => (
         <Dropdown overlay={menu(id)}>
           <Button>
-            Actions <DownOutlined />
+            Actions
+            {' '}
+            <DownOutlined />
           </Button>
         </Dropdown>
       ),
     },
-  ]
+  ];
 
   return (
-    <>
       <UserLayout>
         <div>
-          <div>
-            <h1 className="uppercase font-thin">Created Outputs</h1>
-            <p className="text-xs text-gray-500">List of All Outputs</p>
+          <h1 className="uppercase font-thin">Created Outputs</h1>
+          <p className="text-xs text-gray-500">List of All Outputs</p>
+        </div>
+      </div>
+      <div className="mt-6">
+        {isLoading ? (
+          <div style={{ textAlign: 'center' }}>
+            <Spin tip="Loading..." size="large" />
           </div>
-        </div>
-        <div className="mt-6">
-          {isLoading ? (
-            <div style={{ textAlign: "center" }}>
-              <Spin tip="Loading..." size="large"></Spin>
-            </div>
-          ) : (
-            <Table dataSource={outputs} columns={columns} />
-          )}
-        </div>
-      </UserLayout>
-      {selectedOutPut && (
-        <PopUpModal
-          outPutId={selectedOutPut[0]}
-          refreshModal={selectedOutPut[1]}
-          isVisible={showEditModal}
-          handleCancel={handleCancel}
-        />
-      )}
-    </>
-  )
-}
+        ) : (
+            // eslint-disable-next-line react/jsx-indent
+            <Table
+              dataSource={outputs}
+              columns={columns}
+            />
+        )}
+      </div>
+    </UserLayout >
+  );
+};
 
-export default AllOutputs
+export default AllOutputs;

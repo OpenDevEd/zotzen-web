@@ -1,9 +1,9 @@
-import React from "react"
-import { Redirect } from 'react-router-dom';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
-const LogoutPage = () => {
+const LogoutPage: React.FC = () => {
   localStorage.clear();
-  return <Redirect to={'/'} />
-}
+  return <Navigate to="/" />;
+};
 
-export default LogoutPage
+export default LogoutPage;

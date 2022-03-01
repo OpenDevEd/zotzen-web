@@ -1,20 +1,16 @@
-import React from "react"
-import { Redirect } from 'react-router-dom';
-import { useParams } from "react-router";
-import { UnknownObject } from '../../../utils/types';
+import React from 'react';
+import { Navigate, useParams } from 'react-router-dom';
 
-
-const AuthorizeUser = () => {
-
-  const params: UnknownObject = useParams()
+const AuthorizeUser: React.FC = () => {
+  const params: Record<string, any> = useParams();
 
   const { token } = params;
 
   localStorage.setItem('token', token);
-  
-  return (
-    <Redirect to={'/dashboard'}/>
-  )
-}
 
-export default AuthorizeUser
+  return (
+    <Navigate to="/dashboard" />
+  );
+};
+
+export default AuthorizeUser;

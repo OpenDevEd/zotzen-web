@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "zotzen-web-api",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,30 +8,33 @@
     "clean:dist": "rm -rf dist && mkdir dist",
     "build-server": "babel -d ./dist ./src",
     "build": "npm run clean:dist && npm run build-server",
-    "start": "NODE_ENV=development & nodemon --exec babel-node ./src/app.js"
+    "start": "NODE_ENV=development nodemon --exec babel-node ./src/app.js",
+    "eslint-fix": "eslint --fix --ext .js ."
   },
   "dependencies": {
-    "@sendgrid/mail": "^7.4.2",
-    "axios": "^0.21.1",
-    "bcrypt": "^5.0.0",
-    "body-parser": "^1.19.0",
+    "@sendgrid/mail": "^7.6.1",
+    "axios": "^0.21.4",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.2",
     "celebrate": "^13.0.4",
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.4.6",
+    "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
-    "dotenv": "^8.2.0",
-    "express": "~4.17.1",
-    "http-errors": "~1.8.0",
+    "dotenv": "^8.6.0",
+    "express": "^4.17.3",
+    "express-session": "^1.17.2",
+    "http-errors": "^1.8.1",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.20",
-    "mongoose": "^5.11.11",
+    "lodash": "^4.17.21",
+    "mongoose": "^5.13.14",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "~1.10.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "zotero-lib": "^1.0.75",
-    "zotzen-lib": "^1.0.75"
+    "zotero-lib": "^1.0.81",
+    "zotzen-lib": "^1.0.81"
   },
   "devDependencies": {
     "@babel/cli": "7.12.10",
@@ -40,11 +43,10 @@
     "@babel/preset-env": "7.12.11",
     "@babel/register": "7.12.10",
     "babel-jest": "26.6.3",
-    "eslint": "7.17.0",
-    "eslint-config-airbnb-base": "14.2.1",
-    "eslint-config-prettier": "7.1.0",
-    "eslint-plugin-prettier": "3.3.1",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
     "jest": "26.6.3",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.15"
   }
 }

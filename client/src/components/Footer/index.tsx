@@ -5,8 +5,8 @@ import classnames from "classnames"
 import { Link } from "react-router-dom"
 import LogoIcon from "../../assets/Icons/logo.png"
 
-const AppFooter = () => {
-  const footerClasses = classnames("bg-red-light w-full")
+const AppFooter: React.FC = () => {
+  const footerClasses = classnames('bg-red-light w-full');
   return (
     <footer className={footerClasses}>
       <div className="container mx-auto">
@@ -26,43 +26,22 @@ const AppFooter = () => {
               <ul>
                 <li className="mb-2 font-medium">About</li>
                 <li className="my-1">
-                  <Link
-                    to={{
-                      pathname: "https://edtechhub.org/about-edtech-hub/",
-                    }}
-                    target="_blank"
-                  >
+                  <Link to="/">
                     About EdTech Hub
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link
-                    to={{
-                      pathname:
-                        "https://edtechhub.org/about-edtech-hub/directors-team",
-                    }}
-                    target="_blank"
-                  >
+                  <Link to="/">
                     Team
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link
-                    to={{
-                      pathname: "https://edtechhub.org/contact-us/",
-                    }}
-                    target="_blank"
-                  >
+                  <Link to="/">
                     Contact us
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link
-                    to={{
-                      pathname: "https://edtechhub.org/jobs",
-                    }}
-                    target="_blank"
-                  >
+                  <Link to="/">
                     Careers
                   </Link>
                 </li>
@@ -153,14 +132,16 @@ const AppFooter = () => {
             </div>
           </div>
           <div className="grid lg:grid-cols-1 sm:grid-cols-1 content-center mt-12">
-            <div className=" flex items-start justify-center px-2"></div>
+            <div className=" flex items-start justify-center px-2" />
           </div>
           <div className="grid lg:grid-cols-1 sm:grid-cols-1 content-center mt-12">
             <div className=" flex items-start justify-center px-2">
               <ul>
                 <li className="mb-2 font-medium">
-                  EdTech Hub &copy; <Moment date={moment()} format="YYYY" />.
-                  Creative Commons Attribution 4.0 International License.
+                  EdTech Hub &copy;
+                  {' '}
+                  <Moment date={moment()} format="YYYY" />
+                  . Creative Commons Attribution 4.0 International License.
                 </li>
               </ul>
             </div>
