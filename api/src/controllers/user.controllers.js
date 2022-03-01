@@ -1,5 +1,4 @@
 import User from '../database/models/user';
-import loginActivity from '../database/models/login_activity';
 
 const allRoles = ['Standard', 'Administrator'];
 

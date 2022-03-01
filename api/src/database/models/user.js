@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import uniqueValidator from 'mongoose-unique-validator';
+
 const userSchema = new Schema(
   {
     firstName: String,
@@ -22,6 +22,7 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
+
 userSchema.statics.findOneOrCreate = function findOneOrCreate(condition, doc) {
   const self = this;
   const newDocument = doc;
