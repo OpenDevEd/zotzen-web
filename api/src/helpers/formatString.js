@@ -1,5 +1,5 @@
 export const formatAuthorsString = (authorsString) => {
-  //Get author and remove the last semi-colon and any whitespace after it:
+  // Get author and remove the last semi-colon and any whitespace after it:
   authorsString.replace(/;\s*$/, '');
 
   const authors = authorsString.split(';');
@@ -8,7 +8,7 @@ export const formatAuthorsString = (authorsString) => {
   let authorsListWithKey = [];
   authors.map((singleAuthor) => {
     const authorInfos = singleAuthor.split(',');
-    if (authorInfos.length == 2) {
+    if (authorInfos.length === 2) {
       authorsListWithout = [
         ...authorsListWithout,
         `${authorInfos[0].replace(/\s/g, '')}, ${authorInfos[1].replace(
@@ -39,9 +39,9 @@ export const createCitation = async (data) => {
   let authorsList = '';
 
   await authors.map((author, index) => {
-    authorsList += ` ${author.lastName}, ${author.firstName[0].toUpperCase()}${(index==authors.length-2 && authorsList.length != 2)?'., &':'.,'}`;
+    authorsList += ` ${author.lastName}, ${author.firstName[0].toUpperCase()}${(index===authors.length-2 && authorsList.length !== 2)?'., &':'.,'}`;
   });
-  //remove last comma
+  // remove last comma
   authorsList = authorsList.replace(/,\s*$/, '');
   return `${authorsList} (${year}). ${title}. ${categoryName} ${reportNumber}. https://doi.org/${DOI} Available at ${kerko_url}. Available under Creative Commons Attribution 4.0 International, https://creativecommons.org/licenses/by/4.0/.`;
 };

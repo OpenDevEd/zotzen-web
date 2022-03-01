@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+
 const outputSchema = new Schema(
   {
     userId: {
