@@ -99,8 +99,8 @@ export const addTagsOnOutput = async (req, res) => {
     const { tags } = req.body;
 
     const outputInfo = await Output.findByIdAndUpdate(
-      outputId,
-      { tags },
+      { _id: outputId },
+      { tags: tags },
       { new: true }
     );
     if (!outputInfo) {
