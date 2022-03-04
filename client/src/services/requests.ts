@@ -32,7 +32,10 @@ class Request {
   }
 
   addTags(outputId: string, tags: Record<string, any>[]): Promise<void> {
-    return Axios.put(`/output/all/${outputId}`, tags, (res) => res);
+    return Axios.put(`/output/all/${outputId}`, tags, (res) => {
+      message.success(res.message);
+      return res;
+    });
   }
 }
 

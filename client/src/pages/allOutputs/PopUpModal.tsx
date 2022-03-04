@@ -30,14 +30,13 @@ const PopUpModal: React.FC<Props> = (props) => {
     setSelectedData(checkboxData);
   }, [refreshModal]);
 
-  const { mutate, isSuccess, data } = useMutation((tags: any) => Requests.addTags(outPutId, tags));
+  const { mutate } = useMutation((tags: any) => Requests.addTags(outPutId, tags));
 
   const handleOk = (): void => {
+    mutate({ tags: submitData });
     setSelectedData([]);
     setSubmitData([]);
     handleCancel();
-    console.log(submitData, 'tags');
-    mutate({ tags: submitData });
   };
   const handleClose = (): void => {
     setSelectedData([]);

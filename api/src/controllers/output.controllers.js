@@ -108,7 +108,13 @@ export const addTagsOnOutput = async (req, res) => {
         .status(404)
         .json({ message: 'Citation does not exist', statusCode: 404 });
     }
-    return res.status(200).json({ output: outputInfo, statusCode: 200 });
+    return res
+      .status(200)
+      .json({
+        message: `The tags ${[...tags]} were added.`,
+        output: outputInfo,
+        statusCode: 200,
+      });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });
