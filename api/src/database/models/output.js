@@ -35,6 +35,10 @@ const outputSchema = new Schema(
     workingDocURL: {
       type: String,
     },
+    tags: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true }
 );

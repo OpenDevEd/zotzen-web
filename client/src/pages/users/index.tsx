@@ -17,43 +17,6 @@ const INITIAL_VALUES = {
 };
 
 const validationSchema = yup.object().shape({
-<<<<<<< HEAD
-  role: yup.string().required("* required"),
-})
-
-const Outputs = () => {
-  const [isLoading, setLoading] = useState(true)
-  const [options, setOptions] = useState<UnknownObject[]>([])
-  const [selectedRole, setselectedRole] = useState<string>()
-  const [selectedUser, setselectedUser] = useState<string>()
-  const [showEditModal, setIsModalVisible] = useState(false)
-  const fetchData = async () => {
-    try {
-      let { data }: UnknownObject = await axios.get("/user")
-      data = data.map(function (el: any, index: number) {
-        var o = Object.assign({}, el)
-        o.key = index
-        return o
-      })
-      setOptions(data)
-      setLoading(false)
-    } catch (err: any) {
-      message.error(err.message || err)
-    } finally {
-      setLoading(false)
-    }
-  }
-  const handleEdit = () => {
-    setIsModalVisible(true)
-  }
-  const handleOk = async () => {
-    // eslint-disable-next-line
-    const res: any = await axios.put(`/user/${selectedUser}`, {
-      ...values,
-    })
-    handleCancel()
-  }
-=======
   role: yup.string().required('* required'),
 });
 
@@ -64,7 +27,6 @@ const Outputs: React.FC = () => {
   const [selectedRole, setselectedRole] = useState<string>('');
   const [, setselectedUser] = useState<string>('');
   const [showEditModal, setIsModalVisible] = useState(false);
->>>>>>> develop
 
   const { data, isSuccess, isLoading } = useQuery<any>('get user', () => Requests.getUser());
   if (isSuccess && data) {

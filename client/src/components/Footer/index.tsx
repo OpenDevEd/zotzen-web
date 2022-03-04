@@ -1,9 +1,9 @@
-import React from "react"
-import Moment from "react-moment"
-import moment from "moment"
-import classnames from "classnames"
-import { Link } from "react-router-dom"
-import LogoIcon from "../../assets/Icons/logo.png"
+import React from 'react';
+import Moment from 'react-moment';
+import moment from 'moment';
+import classnames from 'classnames';
+import { Link } from 'react-router-dom';
+import LogoIcon from '../../assets/Icons/logo.png';
 
 const AppFooter: React.FC = () => {
   const footerClasses = classnames('bg-red-light w-full');
@@ -53,7 +53,7 @@ const AppFooter: React.FC = () => {
                 <li className="my-1">
                   <Link
                     to={{
-                      pathname: "http://docs.edtechhub.org/lib/",
+                      pathname: 'http://docs.edtechhub.org/lib/',
                     }}
                     target="_blank"
                   >
@@ -63,7 +63,7 @@ const AppFooter: React.FC = () => {
                 <li className="my-1">
                   <Link
                     to={{
-                      pathname: "https://edtechhub.org/helpdesk",
+                      pathname: 'https://edtechhub.org/helpdesk',
                     }}
                     target="_blank"
                   >
@@ -73,7 +73,7 @@ const AppFooter: React.FC = () => {
                 <li className="my-1">
                   <Link
                     to={{
-                      pathname: "https://edtechhub.org/blog",
+                      pathname: 'https://edtechhub.org/blog',
                     }}
                     target="_blank"
                   >
@@ -83,7 +83,7 @@ const AppFooter: React.FC = () => {
                 <li className="my-1">
                   <Link
                     to={{
-                      pathname: "https://edtechhub.org/newsletter/",
+                      pathname: 'https://edtechhub.org/newsletter/',
                     }}
                     target="_blank"
                   >
@@ -99,7 +99,7 @@ const AppFooter: React.FC = () => {
                   <Link
                     to={{
                       pathname:
-                        "https://edtechhub.org/about-edtech-hub/directors-team/#",
+                        'https://edtechhub.org/about-edtech-hub/directors-team/#',
                     }}
                     target="_blank"
                   >
@@ -110,7 +110,7 @@ const AppFooter: React.FC = () => {
                   <Link
                     to={{
                       pathname:
-                        "https://edtechhub.org/frequently-asked-questions",
+                        'https://edtechhub.org/frequently-asked-questions',
                     }}
                     target="_blank"
                   >
@@ -121,7 +121,7 @@ const AppFooter: React.FC = () => {
                   <Link
                     to={{
                       pathname:
-                        "https://edtechhub.org/frequently-asked-questions",
+                        'https://edtechhub.org/frequently-asked-questions',
                     }}
                     target="_blank"
                   >
@@ -149,7 +149,7 @@ const AppFooter: React.FC = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default AppFooter
+export default AppFooter;

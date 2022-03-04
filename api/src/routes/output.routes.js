@@ -15,4 +15,11 @@ routes.get('/', authenticateUser, controller.fetchMyOutput);
 // Listing all records
 routes.get('/all', authenticateUser, isAdmin, controller.fetchAllOutput);
 
+routes.put(
+  '/all/:outputId',
+  authenticateUser,
+  isAdmin,
+  controller.addTagsOnOutput
+);
+
 export default routes;

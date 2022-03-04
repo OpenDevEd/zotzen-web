@@ -30,6 +30,10 @@ class Request {
   handleOk(selectedUser: string, values: Record<string, any>): Promise<any> {
     return Axios.put(`/user/${selectedUser}`, values, (res) => res);
   }
+
+  addTags(outputId: string, tags: Record<string, any>[]): Promise<void> {
+    return Axios.put(`/output/all/${outputId}`, tags, (res) => res);
+  }
 }
 
 export default new Request();

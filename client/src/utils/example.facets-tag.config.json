@@ -1,24 +1,34 @@
 [
     {
         "id": "XYZ123",
-        "name": "Facet One",
+        "name": "Fiction",
         "children": [
             {
-                "id": "XYZ123",
-                "name": "Facet Two"
+                "id": "XYZ124",
+                "name": "Romance"
             },
             {
-                "id": "XYZ123",
-                "name": "Facet Three"
+                "id": "XYZ125",
+                "name": "Fantasy"
             },
             {
-                "id": "XYZ123",
-                "name": "Facet Four"
+                "id": "XYZ126",
+                "name": "Sci-Fi"
             }
         ]
     },
     {
-        "id": "XYZ123",
-        "name": "Facet Five"
+        "id": "XYZ127",
+        "name": "Biography",
+        "children": [
+            {
+                "id": "XYZ128",
+                "name": "History"
+            },
+            {
+                "id": "XYZ129",
+                "name": "Politics"
+            }
+        ]
     }
 ]
