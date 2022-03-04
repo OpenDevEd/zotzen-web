@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-indent */
 import React, {
-  useEffect, useState, useRef, EventHandler,
+  useEffect, useState, useRef,
 } from 'react';
 import { Modal, Spin } from 'antd';
 import { useMutation } from 'react-query';
