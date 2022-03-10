@@ -3,7 +3,7 @@ import React, {
   useEffect, useState, useRef,
 } from 'react';
 import { Modal, Spin } from 'antd';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import checkboxData from '../../utils/example.facets-tag.config.json';
 import Requests from '../../services/requests';
 
@@ -16,19 +16,36 @@ const PopUpModal: React.FC<Props> = (props) => {
   const [submitData, setSubmitData] = useState<Record<string, any>[]>([]);
   const [selectedData, setSelectedData] = useState<Record<string, any>[]>([]);
   const inputEl = useRef<any>([]);
+  const [checkedTags, setCheckedTags] = useState<Record<string, any>[]>([]);
   const {
     outPutId, isVisible, handleCancel, refreshModal,
   } = props;
 
+  const { data, isLoading, isSuccess } = useQuery<any>(
+    'tags',
+    () => Requests.getTags(outPutId),
+    { onSuccess: () => setCheckedTags(data?.data) },
+  );
+
   useEffect(() => {
-    // fetch("https://erick-mulindi-chat-server.glitch.me/messages")
-    //   .then((data) => data.json())
-    //   .then((data) => {
-    //     setSelectedData(data)
-    //   })
-    //   .catch((error) => console.log(error))
     setSelectedData(checkboxData);
   }, [refreshModal]);
+
+  // console.log(data, '==========');
+
+  // selectedData = [...selectedData, data?.data];
+  // }
+  // }, [data, refreshModal]);
+
+  // useEffect(() => {
+  //   // fetch("https://erick-mulindi-chat-server.glitch.me/messages")
+  //   //   .then((data) => data.json())
+  //   //   .then((data) => {
+  //   //     setSelectedData(data)
+  //   //   })
+  //   //   .catch((error) => console.log(error))
+  //   setSelectedData(checkboxData);
+  // }, [refreshModal]);
 
   const { mutate } = useMutation((tags: any) => Requests.addTags(outPutId, tags));
 
@@ -71,6 +88,7 @@ const PopUpModal: React.FC<Props> = (props) => {
       // eslint-disable-next-line no-param-reassign
       parent.children = checkedItems[index];
     });
+    // selectedData = [...selectedData, selectedData];
     setSelectedData(selectedData);
   };
 
@@ -93,6 +111,19 @@ const PopUpModal: React.FC<Props> = (props) => {
     setSelectedData(checkedItems);
   };
 
+  // https://api.zotero.org/groups/2259720/items/HKH5TDTT/tags
+  // https://api.zotero.org/users/2259720/items/HKH5TDTT/tags
+
+  // 9042012 user id me
+
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <Spin tip="Loading..." size="large" />
+      </div>
+    );
+  }
+
   return (
     <Modal
       title="Add tags"
@@ -100,7 +131,7 @@ const PopUpModal: React.FC<Props> = (props) => {
       onOk={handleOk}
       onCancel={handleClose}
     >
-      {selectedData.length !== 0 ? (
+      {selectedData.length !== 0 && (
         selectedData.map((parent) => (
           <div key={parent.id + 1}>
             <label key={parent.id + 2}>
@@ -142,10 +173,6 @@ const PopUpModal: React.FC<Props> = (props) => {
             </div>
           </div>
         ))
-      ) : (
-          <div style={{ textAlign: 'center' }}>
-            <Spin tip="Loading..." size="large" />
-          </div>
       )}
     </Modal>
   );

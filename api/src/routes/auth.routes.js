@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import passportGoogle from '../helpers/google-passport';
 import passport from 'passport';
 import * as controller from '../controllers/auth.controllers';
 import { verifyToken as authenticateUser } from '../middleware/auth.middleware';

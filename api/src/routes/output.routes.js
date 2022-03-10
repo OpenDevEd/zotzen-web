@@ -22,4 +22,10 @@ routes.put(
   controller.addTagsOnOutput
 );
 
+routes.get(
+  '/tags/:itemId',
+  authenticateUser,
+  isAdmin,
+  controller.getOutputTags
+);
 export default routes;

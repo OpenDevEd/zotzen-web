@@ -12,14 +12,9 @@ import PopUpModal from './PopUpModal';
 const AllOutputs: React.FC = () => {
   let users: Array<Record<string, any>> = [];
   let outputs: Array<Record<string, any>> = [];
-  const [selectedOutPut, setSelectedOutPut] = useState<Record<string, any>[]>([]);
+  const [selectedOutPut, setSelectedOutPut] = useState<Array<string | number>>([]);
   const [showEditModal, setIsModalVisible] = useState(false);
 
-  // checkbox changes start here
-  const handleEdit = async (id: any): Promise<void> => {
-    setSelectedOutPut([id, Math.random()]);
-    setIsModalVisible(true);
-  };
   const handleCancel = (): void => {
     setIsModalVisible(false);
   };
@@ -63,6 +58,13 @@ const AllOutputs: React.FC = () => {
     navigator.clipboard.writeText(outputRow[0].citation || '');
     message.success('Copied to clipboard. You can paste it in a document');
   };
+
+  const handleEdit = async (id: any): Promise<void> => {
+    const linkToLibrary = getLinkToEvidenceLibrary(id);
+    setSelectedOutPut([linkToLibrary.split('/lib/')[1], Math.random()]);
+    setIsModalVisible(true);
+  };
+
   const menu = (id: string): React.ReactElement => (
     <Menu>
       <Menu.Item key="1">

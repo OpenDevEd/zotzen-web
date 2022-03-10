@@ -37,6 +37,10 @@ class Request {
       return res;
     });
   }
+
+  getTags(outputId: string): Promise<void> {
+    return Axios.get(`/output/tags/${outputId}`, (res) => res);
+  }
 }
 
 export default new Request();

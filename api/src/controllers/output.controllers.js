@@ -2,8 +2,8 @@ import Output from '../database/models/output';
 import User from '../database/models/user';
 import { sendEmail } from '../helpers/sendEmail';
 import { formatAuthorsString, createCitation } from '../helpers/formatString';
-import { listCollections } from '../helpers/zotero';
-import { createRecord } from '../helpers/zotzen';
+import { listCollections, listTags } from "../helpers/zotero";
+import { createRecord } from "../helpers/zotzen";
 
 export const listCategories = async (req, res) => {
   try {
@@ -27,7 +27,7 @@ export const createOutput = async (req, res) => {
       documentURL,
     } = req.body;
 
-    let author = req.body.author.replace(/[,;]$/, '');
+    let author = req.body.author.replace(/[,;]$/, "");
 
     const { authors, authorsList } = await formatAuthorsString(author);
 
@@ -46,7 +46,7 @@ export const createOutput = async (req, res) => {
       },
     });
 
-    if (newOutput.message === 'success') {
+    if (newOutput.message === "success") {
       const { data } = newOutput;
       const { kerko_url, DOI } = data;
 
@@ -86,7 +86,7 @@ export const createOutput = async (req, res) => {
       });
       return res.status(200).json({ data: { citation }, statusCode: 200 });
     }
-    return res.status(422).json({ message: 'Invalid data', statusCode: 422 });
+    return res.status(422).json({ message: "Invalid data", statusCode: 422 });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });
@@ -106,15 +106,25 @@ export const addTagsOnOutput = async (req, res) => {
     if (!outputInfo) {
       return res
         .status(404)
-        .json({ message: 'Citation does not exist', statusCode: 404 });
+        .json({ message: "Citation does not exist", statusCode: 404 });
     }
-    return res
-      .status(200)
-      .json({
-        message: `The tags ${[...tags]} were added.`,
-        output: outputInfo,
-        statusCode: 200,
-      });
+    return res.status(200).json({
+      message: `The tags ${[...tags]} were added.`,
+      output: outputInfo,
+      statusCode: 200,
+    });
+  } catch (error) {
+    const { message, status = 400 } = error;
+    return res.status(status).json({ message, statusCode: status });
+  }
+};
+
+export const getOutputTags = async (req, res) => {
+  const { itemId } = req.params;
+  try {
+    const tags = await listTags(itemId);
+
+    return res.status(200).json({ statusCode: 200, tags, count: tags.length });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });
