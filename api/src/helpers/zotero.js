@@ -22,14 +22,16 @@ export const listCollections = async () => {
   return categories;
 };
 
-export const listTags = async (key) => {
-  // let tags = await zoterolibIns.tags({
-  //   key: key,
-  // });
-
-  let tags = await zoterolibIns.item({ key: key }); // let tags = await zoterolibIns.tags({
-  //   key: key,
-  // });
-
+export const getItem = async (key) => {
+  let tags = await zoterolibIns.item({ key: key });
   return tags;
+};
+
+export const addTag = async (key) => {
+  let response = await zoterolibIns.update_item({
+    key: key,
+    addTag: 'test',
+  });
+
+  return response;
 };

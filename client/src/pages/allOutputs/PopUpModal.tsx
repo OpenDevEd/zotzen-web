@@ -17,14 +17,19 @@ const PopUpModal: React.FC<Props> = (props) => {
   const [selectedData, setSelectedData] = useState<Record<string, any>[]>([]);
   const inputEl = useRef<any>([]);
   const [checkedTags, setCheckedTags] = useState<Record<string, any>[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
   const {
     outPutId, isVisible, handleCancel, refreshModal,
   } = props;
 
+  if (outPutId !== undefined) {
+    setIsFetching(true);
+  }
+
   const { data, isLoading, isSuccess } = useQuery<any>(
     'tags',
     () => Requests.getTags(outPutId),
-    { onSuccess: () => setCheckedTags(data?.data) },
+    { onSuccess: () => setCheckedTags(data?.data), enabled: isFetching },
   );
 
   useEffect(() => {
@@ -62,19 +67,19 @@ const PopUpModal: React.FC<Props> = (props) => {
   };
 
   const checkChildBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const childId = e.target.id;
+    const childId = e.target.name;
     const checkedItems = selectedData.map((parent: Record<string, any>) => {
       if (parent.children) {
         return parent.children.map((child: Record<string, any>) => {
-          if (child.id === childId && e.target.checked === true) {
+          if (child.name === childId && e.target.checked === true) {
             if (!submitData.includes(parent.name)) {
               submitData.push(parent.name);
             }
             submitData.push(child.name);
-            inputEl.current[parent.id].checked = true;
+            inputEl.current[parent.name].checked = true;
             return child;
           }
-          if (child.id === childId && e.target.checked === false) {
+          if (child.name === childId && e.target.checked === false) {
             const filteredData = submitData.filter((item: any) => item !== e.target.name);
             setSubmitData(filteredData);
             return child;
@@ -93,16 +98,16 @@ const PopUpModal: React.FC<Props> = (props) => {
   };
 
   const checkParentBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { id } = e.target;
+    const { name } = e.target;
     const checkedItems = selectedData.map((parent) => {
-      if (parent.id === e.target.id && e.target.checked === true) {
-        if (!submitData.includes(parent.id)) {
+      if (parent.name === e.target.id && e.target.checked === true) {
+        if (!submitData.includes(parent.name)) {
           submitData.push(parent.name);
         }
         return parent;
       }
-      if (parent.id === e.target.id && e.target.checked === false) {
-        const filteredData = submitData.filter((item) => item.id !== id);
+      if (parent.name === e.target.name && e.target.checked === false) {
+        const filteredData = submitData.filter((item) => item.name !== name);
         setSubmitData(filteredData);
         return parent;
       }
@@ -131,10 +136,30 @@ const PopUpModal: React.FC<Props> = (props) => {
       onOk={handleOk}
       onCancel={handleClose}
     >
+      {/* {data && data?.tags.map((tag: any) => (
+        <label key={tag.tag}>
+          <input
+            style={{
+              filter: 'hue-rotate(150deg)',
+              transform: 'scale(1.3)',
+              margin: '8px',
+              outline: 'none',
+              boxShadow: 'none',
+            }}
+            // eslint-disable-next-line no-return-assign
+            ref={(el) => (inputEl.current[tag] = el)}
+            // onChange={(e) => checkParentBox(e)}
+            id={tag}
+            type="checkbox"
+            defaultChecked
+          />
+          <span className=" font-normal ml-1">{tag.tag}</span>
+        </label>
+      ))} */}
       {selectedData.length !== 0 && (
         selectedData.map((parent) => (
-          <div key={parent.id + 1}>
-            <label key={parent.id + 2}>
+          <div key={parent.name + 1}>
+            <label key={parent.name + 2}>
               <input
                 style={{
                   filter: 'hue-rotate(150deg)',
@@ -144,9 +169,9 @@ const PopUpModal: React.FC<Props> = (props) => {
                   boxShadow: 'none',
                 }}
                 // eslint-disable-next-line no-return-assign
-                ref={(el) => (inputEl.current[parent.id] = el)}
+                ref={(el) => (inputEl.current[parent.name] = el)}
                 onChange={(e) => checkParentBox(e)}
-                id={parent.id}
+                id={parent.name}
                 type="checkbox"
               />
               <span className=" font-semibold">{parent.name}</span>
@@ -154,7 +179,7 @@ const PopUpModal: React.FC<Props> = (props) => {
             <div className="flex flex-col ml-5">
               {parent.children && (
                 parent.children.map((child: any) => (
-                  <label key={child.id + 1}>
+                  <label key={child.name + 1}>
                     <input
                       style={{
                         filter: 'hue-rotate(150deg)',
@@ -163,7 +188,7 @@ const PopUpModal: React.FC<Props> = (props) => {
                         appearance: 'checkbox',
                       }}
                       onChange={(e) => checkChildBox(e)}
-                      id={child.id}
+                      id={child.name}
                       type="checkbox"
                     />
                     {child.name}

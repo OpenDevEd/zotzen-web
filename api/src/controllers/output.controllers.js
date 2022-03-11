@@ -2,7 +2,7 @@ import Output from '../database/models/output';
 import User from '../database/models/user';
 import { sendEmail } from '../helpers/sendEmail';
 import { formatAuthorsString, createCitation } from '../helpers/formatString';
-import { listCollections, listTags } from "../helpers/zotero";
+import { listCollections, getItem, addTag } from "../helpers/zotero";
 import { createRecord } from "../helpers/zotzen";
 
 export const listCategories = async (req, res) => {
@@ -95,23 +95,14 @@ export const createOutput = async (req, res) => {
 
 export const addTagsOnOutput = async (req, res) => {
   try {
-    const { outputId } = req.params;
+    const { itemId } = req.params;
     const { tags } = req.body;
 
-    const outputInfo = await Output.findByIdAndUpdate(
-      { _id: outputId },
-      { tags: tags },
-      { new: true }
-    );
-    if (!outputInfo) {
-      return res
-        .status(404)
-        .json({ message: "Citation does not exist", statusCode: 404 });
-    }
+    const response = await addTag(itemId);
     return res.status(200).json({
-      message: `The tags ${[...tags]} were added.`,
-      output: outputInfo,
-      statusCode: 200,
+      message: "The tag was added.",
+      reponse: response,
+      statusCode: 201,
     });
   } catch (error) {
     const { message, status = 400 } = error;
@@ -122,9 +113,9 @@ export const addTagsOnOutput = async (req, res) => {
 export const getOutputTags = async (req, res) => {
   const { itemId } = req.params;
   try {
-    const tags = await listTags(itemId);
+    const item = await getItem(itemId);
 
-    return res.status(200).json({ statusCode: 200, tags, count: tags.length });
+    return res.status(200).json({ statusCode: 200, tags: item?.collections });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });

@@ -16,7 +16,7 @@ routes.get('/', authenticateUser, controller.fetchMyOutput);
 routes.get('/all', authenticateUser, isAdmin, controller.fetchAllOutput);
 
 routes.put(
-  '/all/:outputId',
+  '/tags/:itemId',
   authenticateUser,
   isAdmin,
   controller.addTagsOnOutput
