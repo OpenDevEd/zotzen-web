@@ -23,9 +23,13 @@ export const listCollections = async () => {
 };
 
 export const listTags = async (key) => {
-  let tags = await zoterolibIns.tags({
-    key: key,
-  });
+  // let tags = await zoterolibIns.tags({
+  //   key: key,
+  // });
+
+  let tags = await zoterolibIns.item({ key: key }); // let tags = await zoterolibIns.tags({
+  //   key: key,
+  // });
 
   return tags;
 };

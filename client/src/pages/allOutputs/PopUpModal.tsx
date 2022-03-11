@@ -29,7 +29,7 @@ const PopUpModal: React.FC<Props> = (props) => {
 
   useEffect(() => {
     setSelectedData(checkboxData);
-  }, [refreshModal]);
+  }, []);
 
   // console.log(data, '==========');
 
