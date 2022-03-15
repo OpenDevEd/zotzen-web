@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import { Modal, Spin } from 'antd';
 import { useMutation, useQuery } from 'react-query';
+import { prototype } from 'events';
 import checkboxData from '../../utils/example.facets-tag.config.json';
 import Requests from '../../services/requests';
 
@@ -16,41 +17,83 @@ const PopUpModal: React.FC<Props> = (props) => {
   const [submitData, setSubmitData] = useState<Record<string, any>[]>([]);
   const [selectedData, setSelectedData] = useState<Record<string, any>[]>([]);
   const inputEl = useRef<any>([]);
-  const [checkedTags, setCheckedTags] = useState<Record<string, any>[]>([]);
-  const [isFetching, setIsFetching] = useState(false);
+  const checkedTags: Record<string, any>[] = [];
+  let isFetching = false;
   const {
     outPutId, isVisible, handleCancel, refreshModal,
   } = props;
 
   if (outPutId !== undefined) {
-    setIsFetching(true);
+    isFetching = true;
   }
 
   const { data, isLoading, isSuccess } = useQuery<any>(
     'tags',
     () => Requests.getTags(outPutId),
-    { onSuccess: () => setCheckedTags(data?.data), enabled: isFetching },
+    {
+      enabled: isFetching,
+    },
   );
 
   useEffect(() => {
-    setSelectedData(checkboxData);
-  }, []);
+    const dataCheck = checkboxData.map((parent) => ({
+      name: parent.name,
+      isChecked: false,
+      children: parent?.children?.map((child) => ({
+        ...child,
+        isChecked: false,
+      })),
+    }));
 
-  // console.log(data, '==========');
+    if (data && data?.tags && isSuccess) {
+      const tags = checkboxData.map((parent) => {
+        const arr = [];
+        arr.push(parent.name);
+        if (parent?.children) {
+          parent.children.map((child) => arr.push(child.name));
+        }
+        return arr;
+      });
 
-  // selectedData = [...selectedData, data?.data];
-  // }
-  // }, [data, refreshModal]);
+      const tagsToSelect = Array
+        .prototype
+        .concat(...tags)
+        .filter((tag) => data.tags.indexOf(tag) !== -1);
 
-  // useEffect(() => {
-  //   // fetch("https://erick-mulindi-chat-server.glitch.me/messages")
-  //   //   .then((data) => data.json())
-  //   //   .then((data) => {
-  //   //     setSelectedData(data)
-  //   //   })
-  //   //   .catch((error) => console.log(error))
-  //   setSelectedData(checkboxData);
-  // }, [refreshModal]);
+      dataCheck.map((parent, idx) => {
+        tagsToSelect.map((t) => {
+          if (t === parent.name) {
+            const item = [...dataCheck];
+            item[idx].isChecked = true;
+
+            return item;
+          }
+          return ([...dataCheck, { name: t, isChecked: true, children: [] }]);
+        });
+
+        if (parent.children) {
+          parent.children.map((child, idxx) => {
+            tagsToSelect.map((t) => {
+              if (t === child.name) {
+                const item = [...dataCheck];
+                item[idx].children[idxx].isChecked = true;
+
+                return item;
+              }
+
+              return ([...dataCheck, { name: t, isChecked: true, children: [] }]);
+            });
+            return child;
+          });
+        }
+        return parent;
+      });
+    }
+
+    console.log(dataCheck);
+
+    setSelectedData(dataCheck);
+  }, [data, isSuccess, refreshModal]);
 
   const { mutate } = useMutation((tags: any) => Requests.addTags(outPutId, tags));
 
@@ -67,11 +110,18 @@ const PopUpModal: React.FC<Props> = (props) => {
   };
 
   const checkChildBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const childId = e.target.name;
-    const checkedItems = selectedData.map((parent: Record<string, any>) => {
+    const { name } = e.target;
+
+    const checkedItems = selectedData.map((parent, index) => {
       if (parent.children) {
-        return parent.children.map((child: Record<string, any>) => {
-          if (child.name === childId && e.target.checked === true) {
+        return parent.children.map((child: Record<string, any>, idx: number) => {
+          if (child.name === e.target.id && e.target.checked === true) {
+            const updatedList = [...selectedData];
+            updatedList[index].children[idx].isChecked = !updatedList[index].children[idx];
+            updatedList[index].isChecked = !updatedList[index].isChecked;
+
+            console.log(inputEl.current[parent.name], ';;;;;;;');
+
             if (!submitData.includes(parent.name)) {
               submitData.push(parent.name);
             }
@@ -79,8 +129,8 @@ const PopUpModal: React.FC<Props> = (props) => {
             inputEl.current[parent.name].checked = true;
             return child;
           }
-          if (child.name === childId && e.target.checked === false) {
-            const filteredData = submitData.filter((item: any) => item !== e.target.name);
+          if (child.name === e.target.id && e.target.checked === false) {
+            const filteredData = submitData.filter((item: any) => item !== name);
             setSubmitData(filteredData);
             return child;
           }
@@ -99,14 +149,16 @@ const PopUpModal: React.FC<Props> = (props) => {
 
   const checkParentBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name } = e.target;
-    const checkedItems = selectedData.map((parent) => {
+    const checkedItems = selectedData.map((parent, idx) => {
+      const updatedList = [...selectedData];
+      updatedList[idx].isChecked = !updatedList[idx].isChecked;
       if (parent.name === e.target.id && e.target.checked === true) {
         if (!submitData.includes(parent.name)) {
           submitData.push(parent.name);
         }
         return parent;
       }
-      if (parent.name === e.target.name && e.target.checked === false) {
+      if (parent.name === e.target.id && e.target.checked === false) {
         const filteredData = submitData.filter((item) => item.name !== name);
         setSubmitData(filteredData);
         return parent;
@@ -116,46 +168,15 @@ const PopUpModal: React.FC<Props> = (props) => {
     setSelectedData(checkedItems);
   };
 
-  // https://api.zotero.org/groups/2259720/items/HKH5TDTT/tags
-  // https://api.zotero.org/users/2259720/items/HKH5TDTT/tags
-
-  // 9042012 user id me
-
-  if (isLoading) {
-    return (
-      <div style={{ textAlign: 'center' }}>
-        <Spin tip="Loading..." size="large" />
-      </div>
-    );
-  }
-
   return (
     <Modal
       title="Add tags"
       visible={isVisible}
       onOk={handleOk}
       onCancel={handleClose}
+      destroyOnClose
     >
-      {/* {data && data?.tags.map((tag: any) => (
-        <label key={tag.tag}>
-          <input
-            style={{
-              filter: 'hue-rotate(150deg)',
-              transform: 'scale(1.3)',
-              margin: '8px',
-              outline: 'none',
-              boxShadow: 'none',
-            }}
-            // eslint-disable-next-line no-return-assign
-            ref={(el) => (inputEl.current[tag] = el)}
-            // onChange={(e) => checkParentBox(e)}
-            id={tag}
-            type="checkbox"
-            defaultChecked
-          />
-          <span className=" font-normal ml-1">{tag.tag}</span>
-        </label>
-      ))} */}
+      {isLoading && <span className=" text-orange-600">Loading pre-checked tags...</span>}
       {selectedData.length !== 0 && (
         selectedData.map((parent) => (
           <div key={parent.name + 1}>
@@ -173,6 +194,9 @@ const PopUpModal: React.FC<Props> = (props) => {
                 onChange={(e) => checkParentBox(e)}
                 id={parent.name}
                 type="checkbox"
+                // checked={parent.isChecked}
+                defaultChecked={parent.isChecked}
+
               />
               <span className=" font-semibold">{parent.name}</span>
             </label>
@@ -190,6 +214,8 @@ const PopUpModal: React.FC<Props> = (props) => {
                       onChange={(e) => checkChildBox(e)}
                       id={child.name}
                       type="checkbox"
+                      // checked={child.isChecked}
+                      defaultChecked={child.isChecked}
                     />
                     {child.name}
                   </label>

@@ -27,10 +27,10 @@ export const getItem = async (key) => {
   return tags;
 };
 
-export const addTag = async (key) => {
-  let response = await zoterolibIns.update_item({
+export const addTag = async (key, tags) => {
+  let response = await zoterolibIns.item({
     key: key,
-    addTag: 'test',
+    collections: (collection) => [...collection, tags],
   });
 
   return response;
