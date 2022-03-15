@@ -30,7 +30,7 @@ export const getItem = async (key) => {
 export const addTag = async (key, tags) => {
   let response = await zoterolibIns.item({
     key: key,
-    collections: (collection) => [...collection, tags],
+    addtocollection: tags,
   });
 
   return response;

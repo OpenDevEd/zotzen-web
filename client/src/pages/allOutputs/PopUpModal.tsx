@@ -2,9 +2,8 @@
 import React, {
   useEffect, useState, useRef,
 } from 'react';
-import { Modal, Spin } from 'antd';
+import { Modal } from 'antd';
 import { useMutation, useQuery } from 'react-query';
-import { prototype } from 'events';
 import checkboxData from '../../utils/example.facets-tag.config.json';
 import Requests from '../../services/requests';
 
@@ -17,7 +16,6 @@ const PopUpModal: React.FC<Props> = (props) => {
   const [submitData, setSubmitData] = useState<Record<string, any>[]>([]);
   const [selectedData, setSelectedData] = useState<Record<string, any>[]>([]);
   const inputEl = useRef<any>([]);
-  const checkedTags: Record<string, any>[] = [];
   let isFetching = false;
   const {
     outPutId, isVisible, handleCancel, refreshModal,
@@ -65,7 +63,7 @@ const PopUpModal: React.FC<Props> = (props) => {
           if (t === parent.name) {
             const item = [...dataCheck];
             item[idx].isChecked = true;
-
+            submitData.push(t);
             return item;
           }
           return ([...dataCheck, { name: t, isChecked: true, children: [] }]);
@@ -77,7 +75,7 @@ const PopUpModal: React.FC<Props> = (props) => {
               if (t === child.name) {
                 const item = [...dataCheck];
                 item[idx].children[idxx].isChecked = true;
-
+                submitData.push(t);
                 return item;
               }
 
@@ -89,8 +87,6 @@ const PopUpModal: React.FC<Props> = (props) => {
         return parent;
       });
     }
-
-    console.log(dataCheck);
 
     setSelectedData(dataCheck);
   }, [data, isSuccess, refreshModal]);
@@ -119,9 +115,6 @@ const PopUpModal: React.FC<Props> = (props) => {
             const updatedList = [...selectedData];
             updatedList[index].children[idx].isChecked = !updatedList[index].children[idx];
             updatedList[index].isChecked = !updatedList[index].isChecked;
-
-            console.log(inputEl.current[parent.name], ';;;;;;;');
-
             if (!submitData.includes(parent.name)) {
               submitData.push(parent.name);
             }
@@ -143,7 +136,6 @@ const PopUpModal: React.FC<Props> = (props) => {
       // eslint-disable-next-line no-param-reassign
       parent.children = checkedItems[index];
     });
-    // selectedData = [...selectedData, selectedData];
     setSelectedData(selectedData);
   };
 
@@ -194,7 +186,6 @@ const PopUpModal: React.FC<Props> = (props) => {
                 onChange={(e) => checkParentBox(e)}
                 id={parent.name}
                 type="checkbox"
-                // checked={parent.isChecked}
                 defaultChecked={parent.isChecked}
 
               />
@@ -214,7 +205,6 @@ const PopUpModal: React.FC<Props> = (props) => {
                       onChange={(e) => checkChildBox(e)}
                       id={child.name}
                       type="checkbox"
-                      // checked={child.isChecked}
                       defaultChecked={child.isChecked}
                     />
                     {child.name}
