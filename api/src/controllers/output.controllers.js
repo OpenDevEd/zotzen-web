@@ -100,7 +100,7 @@ export const addTagsOnOutput = async (req, res) => {
 
     const response = await addTag(itemId, tags);
     return res.status(200).json({
-      message: `The tags ${tags.split(', ').join(', ')} were added.`,
+      message: 'The tags were added.',
       reponse: response,
       statusCode: 201,
     });

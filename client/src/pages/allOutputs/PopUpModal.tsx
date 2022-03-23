@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-indent */
 import React, {
-  useEffect, useState, useRef,
+  useState, useRef, useCallback,
 } from 'react';
 import { Modal } from 'antd';
 import { useMutation, useQuery } from 'react-query';
@@ -16,25 +16,12 @@ const PopUpModal: React.FC<Props> = (props) => {
   const [submitData, setSubmitData] = useState<Record<string, any>[]>([]);
   const [selectedData, setSelectedData] = useState<Record<string, any>[]>([]);
   const inputEl = useRef<any>([]);
-  let isFetching = false;
   const {
     outPutId, isVisible, handleCancel, refreshModal,
   } = props;
 
-  if (outPutId !== undefined) {
-    isFetching = true;
-  }
-
-  const { data, isLoading, isSuccess } = useQuery<any>(
-    'tags',
-    () => Requests.getTags(outPutId),
-    {
-      enabled: isFetching,
-    },
-  );
-
-  useEffect(() => {
-    const dataCheck = checkboxData.map((parent) => ({
+  const precheck = useCallback((data) => {
+    let dataCheck = checkboxData.map((parent) => ({
       name: parent.name,
       isChecked: false,
       children: parent?.children?.map((child) => ({
@@ -43,7 +30,7 @@ const PopUpModal: React.FC<Props> = (props) => {
       })),
     }));
 
-    if (data && data?.tags && isSuccess) {
+    if (data) {
       const tags = checkboxData.map((parent) => {
         const arr = [];
         arr.push(parent.name);
@@ -58,6 +45,15 @@ const PopUpModal: React.FC<Props> = (props) => {
         .concat(...tags)
         .filter((tag) => data.tags.indexOf(tag) !== -1);
 
+      console.log(tagsToSelect, '++++++++++++');
+
+      if (tagsToSelect.length === 0) {
+        data?.tags.map((tag: string) => {
+          dataCheck = [...dataCheck, { name: tag, isChecked: true, children: [] }];
+          return dataCheck;
+        });
+      }
+
       dataCheck.map((parent, idx) => {
         tagsToSelect.map((t) => {
           if (t === parent.name) {
@@ -66,7 +62,15 @@ const PopUpModal: React.FC<Props> = (props) => {
             submitData.push(t);
             return item;
           }
-          return ([...dataCheck, { name: t, isChecked: true, children: [] }]);
+
+          if (t !== parent.name) {
+            let item = [...dataCheck];
+            submitData.push(t);
+            item = [...item, { name: t, isChecked: true, children: [] }];
+
+            return item;
+          }
+          return t;
         });
 
         if (parent.children) {
@@ -78,8 +82,7 @@ const PopUpModal: React.FC<Props> = (props) => {
                 submitData.push(t);
                 return item;
               }
-
-              return ([...dataCheck, { name: t, isChecked: true, children: [] }]);
+              return t;
             });
             return child;
           });
@@ -89,7 +92,18 @@ const PopUpModal: React.FC<Props> = (props) => {
     }
 
     setSelectedData(dataCheck);
-  }, [data, isSuccess, refreshModal]);
+  }, [submitData]);
+
+  const {
+    isLoading, isRefetching,
+  } = useQuery<any>(
+    'tags',
+    () => Requests.getTags(outPutId),
+    {
+      enabled: isVisible,
+      onSuccess: (data) => precheck(data),
+    },
+  );
 
   const { mutate } = useMutation((tags: any) => Requests.addTags(outPutId, tags));
 
@@ -99,6 +113,7 @@ const PopUpModal: React.FC<Props> = (props) => {
     setSubmitData([]);
     handleCancel();
   };
+
   const handleClose = (): void => {
     setSelectedData([]);
     setSubmitData([]);
@@ -168,8 +183,10 @@ const PopUpModal: React.FC<Props> = (props) => {
       onCancel={handleClose}
       destroyOnClose
     >
-      {isLoading && <span className=" text-orange-600">Loading pre-checked tags...</span>}
-      {selectedData.length !== 0 && (
+      {(isLoading
+        || isRefetching)
+        && <span className=" text-orange-600">Loading pre-checked tags...</span>}
+      {selectedData.length !== 0 ? (
         selectedData.map((parent) => (
           <div key={parent.name + 1}>
             <label key={parent.name + 2}>
@@ -187,7 +204,6 @@ const PopUpModal: React.FC<Props> = (props) => {
                 id={parent.name}
                 type="checkbox"
                 defaultChecked={parent.isChecked}
-
               />
               <span className=" font-semibold">{parent.name}</span>
             </label>
@@ -214,7 +230,7 @@ const PopUpModal: React.FC<Props> = (props) => {
             </div>
           </div>
         ))
-      )}
+      ) : <div>Fetching tags</div>}
     </Modal>
   );
 };
