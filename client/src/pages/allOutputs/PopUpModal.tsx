@@ -1,8 +1,10 @@
 /* eslint-disable react/jsx-indent */
 import React, {
-  useState, useRef, useCallback,
+  useState, useRef,
 } from 'react';
-import { Modal } from 'antd';
+import {
+  Modal, Spin,
+} from 'antd';
 import { useMutation, useQuery } from 'react-query';
 import checkboxData from '../../utils/example.facets-tag.config.json';
 import Requests from '../../services/requests';
@@ -17,10 +19,10 @@ const PopUpModal: React.FC<Props> = (props) => {
   const [selectedData, setSelectedData] = useState<Record<string, any>[]>([]);
   const inputEl = useRef<any>([]);
   const {
-    outPutId, isVisible, handleCancel, refreshModal,
+    outPutId, isVisible, handleCancel,
   } = props;
 
-  const precheck = useCallback((data) => {
+  const precheck = (data: any): void => {
     let dataCheck = checkboxData.map((parent) => ({
       name: parent.name,
       isChecked: false,
@@ -44,8 +46,6 @@ const PopUpModal: React.FC<Props> = (props) => {
         .prototype
         .concat(...tags)
         .filter((tag) => data.tags.indexOf(tag) !== -1);
-
-      console.log(tagsToSelect, '++++++++++++');
 
       if (tagsToSelect.length === 0) {
         data?.tags.map((tag: string) => {
@@ -92,15 +92,15 @@ const PopUpModal: React.FC<Props> = (props) => {
     }
 
     setSelectedData(dataCheck);
-  }, [submitData]);
+  };
 
   const {
-    isLoading, isRefetching,
+    isLoading,
   } = useQuery<any>(
     'tags',
     () => Requests.getTags(outPutId),
     {
-      enabled: isVisible,
+      enabled: isVisible && !!outPutId,
       onSuccess: (data) => precheck(data),
     },
   );
@@ -177,16 +177,18 @@ const PopUpModal: React.FC<Props> = (props) => {
 
   return (
     <Modal
-      title="Add tags"
+      title="Tags"
       visible={isVisible}
       onOk={handleOk}
-      onCancel={handleClose}
+      onCancel={handleCancel}
+      afterClose={handleClose}
+      cancelText="Close"
+      okText="Submit"
+      closable={false}
+      maskClosable={false}
       destroyOnClose
     >
-      {(isLoading
-        || isRefetching)
-        && <span className=" text-orange-600">Loading pre-checked tags...</span>}
-      {selectedData.length !== 0 ? (
+      {!isLoading && selectedData.length > 0 ? (
         selectedData.map((parent) => (
           <div key={parent.name + 1}>
             <label key={parent.name + 2}>
@@ -230,7 +232,11 @@ const PopUpModal: React.FC<Props> = (props) => {
             </div>
           </div>
         ))
-      ) : <div>Fetching tags</div>}
+      ) : (
+        <div style={{ textAlign: 'center' }}>
+          <Spin tip="Loading..." size="large" />
+        </div>
+      )}
     </Modal>
   );
 };
