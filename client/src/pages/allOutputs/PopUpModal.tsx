@@ -103,23 +103,31 @@ const PopUpModal: React.FC<Props> = (props) => {
     },
   );
 
-  const { mutate } = useMutation((tags: string[]) => Requests.addTags(outPutId, tags));
-  const { mutate: remove } = useMutation((tags: string[]) => Requests.removeTags(outPutId, tags));
-
-  const handleOk = (): void => {
-    if (submitData.size > 0) mutate([...new Set(submitData)]);
-
-    if (tagsRemove.size > 0) remove([...new Set(tagsRemove)]);
-    setSelectedData([]);
-    // submitData?.clear();
-    handleCancel();
-  };
-
   const handleClose = (): void => {
     setSelectedData([]);
     submitData?.clear();
     tagsRemove.clear();
     handleCancel();
+  };
+
+  const {
+    mutate,
+    isLoading: isMutating,
+  } = useMutation(
+    (tags: string[]) => Requests.addTags(outPutId, tags),
+    { onSuccess: () => handleClose() },
+  );
+
+  const {
+    mutate: remove,
+    isLoading: isRemoving,
+  } = useMutation((tags: string[]) => Requests.removeTags(outPutId, tags), {
+    onSuccess: () => handleClose(),
+  });
+
+  const handleOk = (): void => {
+    if (submitData.size > 0) mutate([...new Set(submitData)]);
+    if (tagsRemove.size > 0) remove([...new Set(tagsRemove)]);
   };
 
   const checkChildBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -182,7 +190,7 @@ const PopUpModal: React.FC<Props> = (props) => {
       onCancel={handleCancel}
       afterClose={handleClose}
       cancelText="Close"
-      okText="Submit"
+      okText={isMutating || isRemoving ? 'Submitting...' : 'Submit'}
       closable={false}
       maskClosable={false}
       destroyOnClose
