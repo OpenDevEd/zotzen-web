@@ -31,8 +31,15 @@ class Request {
     return Axios.put(`/user/${selectedUser}`, values, (res) => res);
   }
 
-  addTags(outputId: string, tags: Record<string, any>[]): Promise<void> {
+  addTags(outputId: string, tags: string[]): Promise<void> {
     return Axios.put(`/output/tags/${outputId}`, tags, (res) => {
+      message.success(res.message);
+      return res;
+    });
+  }
+
+  removeTags(outputId: string, tags: string[]): Promise<void> {
+    return Axios.put(`/output/tags/${outputId}/remove`, tags, (res) => {
       message.success(res.message);
       return res;
     });

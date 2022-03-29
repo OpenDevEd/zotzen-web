@@ -15,7 +15,8 @@ interface Props {
 }
 
 const PopUpModal: React.FC<Props> = (props) => {
-  const [submitData, setSubmitData] = useState<Record<string, any>[]>([]);
+  const [submitData, setSubmitData] = useState<Set<string>>(new Set());
+  const [tagsRemove, setTagsRemove] = useState<Set<string>>(new Set());
   const [selectedData, setSelectedData] = useState<Record<string, any>[]>([]);
   const inputEl = useRef<any>([]);
   const {
@@ -59,13 +60,11 @@ const PopUpModal: React.FC<Props> = (props) => {
           if (t === parent.name) {
             const item = [...dataCheck];
             item[idx].isChecked = true;
-            submitData.push(t);
             return item;
           }
 
           if (t !== parent.name) {
             let item = [...dataCheck];
-            submitData.push(t);
             item = [...item, { name: t, isChecked: true, children: [] }];
 
             return item;
@@ -79,7 +78,6 @@ const PopUpModal: React.FC<Props> = (props) => {
               if (t === child.name) {
                 const item = [...dataCheck];
                 item[idx].children[idxx].isChecked = true;
-                submitData.push(t);
                 return item;
               }
               return t;
@@ -105,41 +103,44 @@ const PopUpModal: React.FC<Props> = (props) => {
     },
   );
 
-  const { mutate } = useMutation((tags: any) => Requests.addTags(outPutId, tags));
+  const { mutate } = useMutation((tags: string[]) => Requests.addTags(outPutId, tags));
+  const { mutate: remove } = useMutation((tags: string[]) => Requests.removeTags(outPutId, tags));
 
   const handleOk = (): void => {
-    mutate({ tags: submitData });
+    if (submitData.size > 0) mutate([...new Set(submitData)]);
+
+    if (tagsRemove.size > 0) remove([...new Set(tagsRemove)]);
     setSelectedData([]);
-    setSubmitData([]);
+    // submitData?.clear();
     handleCancel();
   };
 
   const handleClose = (): void => {
     setSelectedData([]);
-    setSubmitData([]);
+    submitData?.clear();
+    tagsRemove.clear();
     handleCancel();
   };
 
   const checkChildBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name } = e.target;
-
-    const checkedItems = selectedData.map((parent, index) => {
+    const checkedItems = selectedData.map((parent) => {
       if (parent.children) {
-        return parent.children.map((child: Record<string, any>, idx: number) => {
-          if (child.name === e.target.id && e.target.checked === true) {
-            const updatedList = [...selectedData];
-            updatedList[index].children[idx].isChecked = !updatedList[index].children[idx];
-            updatedList[index].isChecked = !updatedList[index].isChecked;
-            if (!submitData.includes(parent.name)) {
-              submitData.push(parent.name);
+        return parent.children.map((child: Record<string, any>) => {
+          if (child.name === e.target.id && e.target.checked) {
+            if (!submitData.has(parent.name)) {
+              setSubmitData((prev) => new Set(prev.add(parent.name)));
+              setTagsRemove((prev) => new Set([...prev].filter((x) => x !== parent.name)));
             }
-            submitData.push(child.name);
+            setSubmitData((prev) => new Set(prev.add(child.name)));
+            setTagsRemove((prev) => new Set([...prev].filter((x) => x !== child.name)));
+
             inputEl.current[parent.name].checked = true;
             return child;
           }
-          if (child.name === e.target.id && e.target.checked === false) {
-            const filteredData = submitData.filter((item: any) => item !== name);
-            setSubmitData(filteredData);
+          if (child.name === e.target.id && !e.target.checked) {
+            setSubmitData((prev) => new Set([...prev].filter((x) => x !== child.name)));
+            setTagsRemove((prev) => new Set(prev.add(child.name)));
+
             return child;
           }
           return child;
@@ -155,19 +156,17 @@ const PopUpModal: React.FC<Props> = (props) => {
   };
 
   const checkParentBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name } = e.target;
-    const checkedItems = selectedData.map((parent, idx) => {
-      const updatedList = [...selectedData];
-      updatedList[idx].isChecked = !updatedList[idx].isChecked;
-      if (parent.name === e.target.id && e.target.checked === true) {
-        if (!submitData.includes(parent.name)) {
-          submitData.push(parent.name);
+    const checkedItems = selectedData.map((parent) => {
+      if (parent.name === e.target.id && e.target.checked) {
+        if (!submitData.has(parent.name)) {
+          setSubmitData((prev) => new Set(prev.add(parent.name)));
+          setTagsRemove((prev) => new Set([...prev].filter((x) => x !== parent.name)));
         }
         return parent;
       }
-      if (parent.name === e.target.id && e.target.checked === false) {
-        const filteredData = submitData.filter((item) => item.name !== name);
-        setSubmitData(filteredData);
+      if (parent.name === e.target.id && !e.target.checked) {
+        setTagsRemove((prev) => new Set(prev.add(parent.name)));
+        setSubmitData((prev) => new Set([...prev].filter((x) => x !== parent.name)));
         return parent;
       }
       return parent;
