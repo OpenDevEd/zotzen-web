@@ -35,3 +35,12 @@ export const addTag = async (key, tags) => {
 
   return response;
 };
+
+export const removeTag = async (key, tags) => {
+  let response = await zoterolibIns.item({
+    key: key,
+    removefromcollection: tags,
+  });
+
+  return response;
+};

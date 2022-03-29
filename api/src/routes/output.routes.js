@@ -22,6 +22,13 @@ routes.put(
   controller.addTagsOnOutput
 );
 
+routes.put(
+  '/tags/:itemId/remove',
+  authenticateUser,
+  isAdmin,
+  controller.removeTagsFromOutput
+);
+
 routes.get(
   '/tags/:itemId',
   authenticateUser,

@@ -2,7 +2,7 @@ import Output from '../database/models/output';
 import User from '../database/models/user';
 import { sendEmail } from '../helpers/sendEmail';
 import { formatAuthorsString, createCitation } from '../helpers/formatString';
-import { listCollections, getItem, addTag } from '../helpers/zotero';
+import { listCollections, getItem, addTag, removeTag } from '../helpers/zotero';
 import { createRecord } from '../helpers/zotzen';
 
 export const listCategories = async (req, res) => {
@@ -95,14 +95,33 @@ export const createOutput = async (req, res) => {
 
 export const addTagsOnOutput = async (req, res) => {
   try {
-    const { itemId } = req.params;
-    const { tags } = req.body;
-
-    const response = await addTag(itemId, tags);
+    const {
+      params: { itemId },
+      body,
+    } = req;
+    const response = await addTag(itemId, body);
     return res.status(200).json({
       message: 'The tags were added.',
       reponse: response,
       statusCode: 201,
+    });
+  } catch (error) {
+    const { message, status = 400 } = error;
+    return res.status(status).json({ message, statusCode: status });
+  }
+};
+
+export const removeTagsFromOutput = async (req, res) => {
+  try {
+    const {
+      params: { itemId },
+      body,
+    } = req;
+    const response = await removeTag(itemId, body);
+    return res.status(200).json({
+      message: 'The tags were removed.',
+      reponse: response,
+      statusCode: 204,
     });
   } catch (error) {
     const { message, status = 400 } = error;
