@@ -32,17 +32,11 @@ class Request {
   }
 
   addTags(outputId: string, tags: string[]): Promise<void> {
-    return Axios.put(`/output/tags/${outputId}`, tags, (res) => {
-      message.success(res.message);
-      return res;
-    });
+    return Axios.put(`/output/tags/${outputId}`, tags, (res) => res);
   }
 
   removeTags(outputId: string, tags: string[]): Promise<void> {
-    return Axios.put(`/output/tags/${outputId}/remove`, tags, (res) => {
-      message.success(res.message);
-      return res;
-    });
+    return Axios.put(`/output/tags/${outputId}/remove`, tags, (res) => res);
   }
 
   getTags(outputId: string): Promise<void> {

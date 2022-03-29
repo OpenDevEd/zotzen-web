@@ -3,7 +3,7 @@ import React, {
   useState, useRef,
 } from 'react';
 import {
-  Modal, Spin,
+  Modal, Spin, message,
 } from 'antd';
 import { useMutation, useQuery } from 'react-query';
 import checkboxData from '../../utils/example.facets-tag.config.json';
@@ -26,6 +26,7 @@ const PopUpModal: React.FC<Props> = (props) => {
   const precheck = (data: any): void => {
     let dataCheck = checkboxData.map((parent) => ({
       name: parent.name,
+      id: parent.id,
       isChecked: false,
       children: parent?.children?.map((child) => ({
         ...child,
@@ -36,9 +37,9 @@ const PopUpModal: React.FC<Props> = (props) => {
     if (data) {
       const tags = checkboxData.map((parent) => {
         const arr = [];
-        arr.push(parent.name);
+        arr.push(parent.id);
         if (parent?.children) {
-          parent.children.map((child) => arr.push(child.name));
+          parent.children.map((child) => arr.push(child.id));
         }
         return arr;
       });
@@ -50,22 +51,26 @@ const PopUpModal: React.FC<Props> = (props) => {
 
       if (tagsToSelect.length === 0) {
         data?.tags.map((tag: string) => {
-          dataCheck = [...dataCheck, { name: tag, isChecked: true, children: [] }];
+          dataCheck = [...dataCheck, {
+            name: '', id: tag, isChecked: true, children: [],
+          }];
           return dataCheck;
         });
       }
 
       dataCheck.map((parent, idx) => {
         tagsToSelect.map((t) => {
-          if (t === parent.name) {
+          if (t === parent.id) {
             const item = [...dataCheck];
             item[idx].isChecked = true;
             return item;
           }
 
-          if (t !== parent.name) {
+          if (t !== parent.id) {
             let item = [...dataCheck];
-            item = [...item, { name: t, isChecked: true, children: [] }];
+            item = [...item, {
+              name: '', id: t, isChecked: true, children: [],
+            }];
 
             return item;
           }
@@ -75,7 +80,7 @@ const PopUpModal: React.FC<Props> = (props) => {
         if (parent.children) {
           parent.children.map((child, idxx) => {
             tagsToSelect.map((t) => {
-              if (t === child.name) {
+              if (t === child.id) {
                 const item = [...dataCheck];
                 item[idx].children[idxx].isChecked = true;
                 return item;
@@ -115,39 +120,48 @@ const PopUpModal: React.FC<Props> = (props) => {
     isLoading: isMutating,
   } = useMutation(
     (tags: string[]) => Requests.addTags(outPutId, tags),
-    { onSuccess: () => handleClose() },
+    {
+      onSuccess: () => {
+        handleClose();
+        message.success('The tags were updated');
+      },
+    },
   );
 
   const {
     mutate: remove,
     isLoading: isRemoving,
   } = useMutation((tags: string[]) => Requests.removeTags(outPutId, tags), {
-    onSuccess: () => handleClose(),
+    onSuccess: () => {
+      handleClose();
+      message.success('The tags were updated ');
+    },
   });
 
   const handleOk = (): void => {
     if (submitData.size > 0) mutate([...new Set(submitData)]);
     if (tagsRemove.size > 0) remove([...new Set(tagsRemove)]);
+    if (submitData.size === 0 && tagsRemove.size === 0) message.warn('No changes were made.');
   };
 
   const checkChildBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const checkedItems = selectedData.map((parent) => {
       if (parent.children) {
         return parent.children.map((child: Record<string, any>) => {
-          if (child.name === e.target.id && e.target.checked) {
-            if (!submitData.has(parent.name)) {
-              setSubmitData((prev) => new Set(prev.add(parent.name)));
-              setTagsRemove((prev) => new Set([...prev].filter((x) => x !== parent.name)));
+          if (child.id === e.target.id && e.target.checked) {
+            if (!submitData.has(parent.id)) {
+              setSubmitData((prev) => new Set(prev.add(parent.id)));
+              setTagsRemove((prev) => new Set([...prev].filter((x) => x !== parent.id)));
             }
-            setSubmitData((prev) => new Set(prev.add(child.name)));
-            setTagsRemove((prev) => new Set([...prev].filter((x) => x !== child.name)));
+            setSubmitData((prev) => new Set(prev.add(child.id)));
+            setTagsRemove((prev) => new Set([...prev].filter((x) => x !== child.id)));
 
-            inputEl.current[parent.name].checked = true;
+            inputEl.current[parent.id].checked = true;
             return child;
           }
-          if (child.name === e.target.id && !e.target.checked) {
-            setSubmitData((prev) => new Set([...prev].filter((x) => x !== child.name)));
-            setTagsRemove((prev) => new Set(prev.add(child.name)));
+          if (child.id === e.target.id && !e.target.checked) {
+            setSubmitData((prev) => new Set([...prev].filter((x) => x !== child.id)));
+            setTagsRemove((prev) => new Set(prev.add(child.id)));
 
             return child;
           }
@@ -165,16 +179,16 @@ const PopUpModal: React.FC<Props> = (props) => {
 
   const checkParentBox = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const checkedItems = selectedData.map((parent) => {
-      if (parent.name === e.target.id && e.target.checked) {
-        if (!submitData.has(parent.name)) {
-          setSubmitData((prev) => new Set(prev.add(parent.name)));
-          setTagsRemove((prev) => new Set([...prev].filter((x) => x !== parent.name)));
+      if (parent.id === e.target.id && e.target.checked) {
+        if (!submitData.has(parent.id)) {
+          setSubmitData((prev) => new Set(prev.add(parent.id)));
+          setTagsRemove((prev) => new Set([...prev].filter((x) => x !== parent.id)));
         }
         return parent;
       }
-      if (parent.name === e.target.id && !e.target.checked) {
-        setTagsRemove((prev) => new Set(prev.add(parent.name)));
-        setSubmitData((prev) => new Set([...prev].filter((x) => x !== parent.name)));
+      if (parent.id === e.target.id && !e.target.checked) {
+        setTagsRemove((prev) => new Set(prev.add(parent.id)));
+        setSubmitData((prev) => new Set([...prev].filter((x) => x !== parent.id)));
         return parent;
       }
       return parent;
@@ -197,8 +211,8 @@ const PopUpModal: React.FC<Props> = (props) => {
     >
       {!isLoading && selectedData.length > 0 ? (
         selectedData.map((parent) => (
-          <div key={parent.name + 1}>
-            <label key={parent.name + 2}>
+          <div key={parent.id + 1}>
+            <label key={parent.id + 2}>
               <input
                 style={{
                   filter: 'hue-rotate(150deg)',
@@ -207,10 +221,10 @@ const PopUpModal: React.FC<Props> = (props) => {
                   outline: 'none',
                   boxShadow: 'none',
                 }}
-                // eslint-disable-next-line no-return-assign
-                ref={(el) => (inputEl.current[parent.name] = el)}
+                  // eslint-disable-next-line no-return-assign
+                ref={(el) => (inputEl.current[parent.id] = el)}
                 onChange={(e) => checkParentBox(e)}
-                id={parent.name}
+                id={parent.id}
                 type="checkbox"
                 defaultChecked={parent.isChecked}
               />
@@ -219,7 +233,7 @@ const PopUpModal: React.FC<Props> = (props) => {
             <div className="flex flex-col ml-5">
               {parent.children && (
                 parent.children.map((child: any) => (
-                  <label key={child.name + 1}>
+                  <label key={child.id + 1}>
                     <input
                       style={{
                         filter: 'hue-rotate(150deg)',
@@ -228,7 +242,7 @@ const PopUpModal: React.FC<Props> = (props) => {
                         appearance: 'checkbox',
                       }}
                       onChange={(e) => checkChildBox(e)}
-                      id={child.name}
+                      id={child.id}
                       type="checkbox"
                       defaultChecked={child.isChecked}
                     />
