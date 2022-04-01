@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-indent */
 import React, {
-  useState, useRef,
+  useState, useRef, useEffect,
 } from 'react';
 import {
   Modal, Spin, message,
@@ -18,6 +18,7 @@ const PopUpModal: React.FC<Props> = (props) => {
   const [submitData, setSubmitData] = useState<Set<string>>(new Set());
   const [tagsRemove, setTagsRemove] = useState<Set<string>>(new Set());
   const [selectedData, setSelectedData] = useState<Record<string, any>[]>([]);
+  const [msg, setMsg] = useState<string>('');
   const inputEl = useRef<any>([]);
   const {
     outPutId, isVisible, handleCancel,
@@ -123,7 +124,7 @@ const PopUpModal: React.FC<Props> = (props) => {
     {
       onSuccess: () => {
         handleClose();
-        message.success('The tags were updated');
+        setMsg('The tags were updated.');
       },
     },
   );
@@ -134,8 +135,13 @@ const PopUpModal: React.FC<Props> = (props) => {
   } = useMutation((tags: string[]) => Requests.removeTags(outPutId, tags), {
     onSuccess: () => {
       handleClose();
-      message.success('The tags were updated ');
+      setMsg('The tags were updated.');
     },
+  });
+
+  useEffect(() => {
+    if (msg.length > 0) message.success(msg);
+    return () => setMsg('');
   });
 
   const handleOk = (): void => {
