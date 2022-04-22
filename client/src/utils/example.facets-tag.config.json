@@ -1,0 +1,56 @@
+[
+    {
+        "name": "Lorem",
+        "id": "5HJ8ERSC",
+        "children": [
+            {
+                "name": "Neque",
+                "id": "GZV4U5BV"
+            },
+            {
+                "name": "Porro",
+                "id": "D4UQWS97"
+            },
+            {
+                "name": "Quisquam",
+                "id": "487M3CXG"
+            }
+        ]
+    },
+    {
+        "name": "Ipsum",
+        "id": "U3KWWU4J",
+        "children": [
+            {
+                "name": "Dolorem",
+                "id": "QCMMHW5Z"
+            },
+            {
+                "name": "Est",
+                "id": "KCRIRHCB"
+            },
+            {
+                "name": "Qui",
+                "id": "2NK3V2UI"
+            },
+            {
+                "name": "Dolor",
+                "id": "QSXJX7JD"
+            }
+        ]
+    },
+    {
+        "name": "Lipsum",
+        "id": "Q584735C",
+        "children": [
+            {
+                "name": "Amet",
+                "id": "93SISQI8"
+            },
+            {
+                "name": "Consecteur",
+                "id": "UU42T5KT"
+            }
+        ]
+    }
+]

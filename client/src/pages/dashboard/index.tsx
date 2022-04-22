@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Input, Select, message } from 'antd';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
     'Central Services',
     'Other',
   ];
-  const [resMessage] = useState<string>();
+  // const [resMessage] = useState<string>();
   let options: Array<Record<string, any>> = [];
 
   const {

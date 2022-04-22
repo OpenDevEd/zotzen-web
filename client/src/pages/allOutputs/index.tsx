@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   message, Spin, Table, Menu, Dropdown, Button, Avatar,
 } from 'antd';
@@ -7,10 +7,17 @@ import { useQuery } from 'react-query';
 
 import UserLayout from '../../components/Layout/UserLayout';
 import Requests from '../../services/requests';
+import PopUpModal from './PopUpModal';
 
 const AllOutputs: React.FC = () => {
   let users: Array<Record<string, any>> = [];
   let outputs: Array<Record<string, any>> = [];
+  const [selectedOutPut, setSelectedOutPut] = useState<Array<string | number>>([]);
+  const [showEditModal, setIsModalVisible] = useState(false);
+
+  const handleCancel = (): void => {
+    setIsModalVisible(false);
+  };
 
   const {
     data,
@@ -51,6 +58,13 @@ const AllOutputs: React.FC = () => {
     navigator.clipboard.writeText(outputRow[0].citation || '');
     message.success('Copied to clipboard. You can paste it in a document');
   };
+
+  const handleEdit = async (id: any): Promise<void> => {
+    const linkToLibrary = getLinkToEvidenceLibrary(id);
+    setSelectedOutPut([linkToLibrary.split('/lib/')[1], Math.random()]);
+    setIsModalVisible(true);
+  };
+
   const menu = (id: string): React.ReactElement => (
     <Menu>
       <Menu.Item key="1">
@@ -68,6 +82,14 @@ const AllOutputs: React.FC = () => {
       <Menu.Item key="5">Reserve new DOI</Menu.Item>
       <Menu.Item key="6" onClick={() => handleCopyToClipboard(id)}>
         Copy citation
+      </Menu.Item>
+      <Menu.Item
+        key="7"
+        onClick={() => {
+          handleEdit(id);
+        }}
+      >
+        Tags
       </Menu.Item>
     </Menu>
   );
@@ -115,27 +137,37 @@ const AllOutputs: React.FC = () => {
   ];
 
   return (
-    <UserLayout>
-      <div>
+    <>
+      <UserLayout>
         <div>
           <h1 className="uppercase font-thin">Created Outputs</h1>
           <p className="text-xs text-gray-500">List of All Outputs</p>
         </div>
-      </div>
-      <div className="mt-6">
-        {isLoading ? (
-          <div style={{ textAlign: 'center' }}>
-            <Spin tip="Loading..." size="large" />
-          </div>
-        ) : (
+        <div className="mt-6">
+          {isLoading ? (
+            <div style={{ textAlign: 'center' }}>
+              <Spin tip="Loading..." size="large" />
+            </div>
+          ) : (
             // eslint-disable-next-line react/jsx-indent
             <Table
               dataSource={outputs}
               columns={columns}
             />
-        )}
-      </div>
-    </UserLayout>
+          )}
+        </div>
+      </UserLayout>
+      {
+        selectedOutPut && (
+          <PopUpModal
+            outPutId={selectedOutPut[0]}
+            refreshModal={selectedOutPut[1]}
+            isVisible={showEditModal}
+            handleCancel={handleCancel}
+          />
+        )
+      }
+    </>
   );
 };
 

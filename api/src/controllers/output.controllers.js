@@ -2,7 +2,7 @@ import Output from '../database/models/output';
 import User from '../database/models/user';
 import { sendEmail } from '../helpers/sendEmail';
 import { formatAuthorsString, createCitation } from '../helpers/formatString';
-import { listCollections } from '../helpers/zotero';
+import { listCollections, getItem, addTag, removeTag } from '../helpers/zotero';
 import { createRecord } from '../helpers/zotzen';
 
 export const listCategories = async (req, res) => {
@@ -87,6 +87,54 @@ export const createOutput = async (req, res) => {
       return res.status(200).json({ data: { citation }, statusCode: 200 });
     }
     return res.status(422).json({ message: 'Invalid data', statusCode: 422 });
+  } catch (error) {
+    const { message, status = 400 } = error;
+    return res.status(status).json({ message, statusCode: status });
+  }
+};
+
+export const addTagsOnOutput = async (req, res) => {
+  try {
+    const {
+      params: { itemId },
+      body,
+    } = req;
+    const response = await addTag(itemId, body);
+    return res.status(200).json({
+      message: 'The tags were added.',
+      reponse: response,
+      statusCode: 201,
+    });
+  } catch (error) {
+    const { message, status = 400 } = error;
+    return res.status(status).json({ message, statusCode: status });
+  }
+};
+
+export const removeTagsFromOutput = async (req, res) => {
+  try {
+    const {
+      params: { itemId },
+      body,
+    } = req;
+    const response = await removeTag(itemId, body);
+    return res.status(200).json({
+      message: 'The tags were removed.',
+      reponse: response,
+      statusCode: 204,
+    });
+  } catch (error) {
+    const { message, status = 400 } = error;
+    return res.status(status).json({ message, statusCode: status });
+  }
+};
+
+export const getOutputTags = async (req, res) => {
+  const { itemId } = req.params;
+  try {
+    const item = await getItem(itemId);
+
+    return res.status(200).json({ statusCode: 200, tags: item?.collections });
   } catch (error) {
     const { message, status = 400 } = error;
     return res.status(status).json({ message, statusCode: status });

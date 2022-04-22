@@ -21,3 +21,26 @@ export const listCollections = async () => {
   categories = await filterOutputCategories(categories);
   return categories;
 };
+
+export const getItem = async (key) => {
+  let tags = await zoterolibIns.item({ key: key });
+  return tags;
+};
+
+export const addTag = async (key, tags) => {
+  let response = await zoterolibIns.item({
+    key: key,
+    addtocollection: tags,
+  });
+
+  return response;
+};
+
+export const removeTag = async (key, tags) => {
+  let response = await zoterolibIns.item({
+    key: key,
+    removefromcollection: tags,
+  });
+
+  return response;
+};

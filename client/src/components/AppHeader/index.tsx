@@ -35,7 +35,14 @@ const AppHeader: React.FC = () => {
                   },
                 );
                 return (
-                  <Link to={page.path} key={page.name} className={className}>
+                  <Link
+                    key={page.name}
+                    className={className}
+                    to={{
+                      pathname: `${page.path}`,
+                    }}
+                    target="_blank"
+                  >
                     <p>{page.name}</p>
                   </Link>
                 );

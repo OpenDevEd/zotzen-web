@@ -51,22 +51,42 @@ const AppFooter: React.FC = () => {
               <ul>
                 <li className="mb-2 font-medium">Our work</li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname: 'http://docs.edtechhub.org/lib/',
+                    }}
+                    target="_blank"
+                  >
                     Evidence Library
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname: 'https://edtechhub.org/helpdesk',
+                    }}
+                    target="_blank"
+                  >
                     Helpdesk
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname: 'https://edtechhub.org/blog',
+                    }}
+                    target="_blank"
+                  >
                     Blog
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname: 'https://edtechhub.org/newsletter/',
+                    }}
+                    target="_blank"
+                  >
                     Newsletter
                   </Link>
                 </li>
@@ -76,17 +96,35 @@ const AppFooter: React.FC = () => {
               <ul>
                 <li className="font-medium">Site</li>
                 <li className="my-1">
-                  <Link to="/">
+                  <Link
+                    to={{
+                      pathname:
+                        'https://edtechhub.org/about-edtech-hub/directors-team/#',
+                    }}
+                    target="_blank"
+                  >
                     Privacy policy
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/frequently-asked-questions">
+                  <Link
+                    to={{
+                      pathname:
+                        'https://edtechhub.org/frequently-asked-questions',
+                    }}
+                    target="_blank"
+                  >
                     Cookies policy
                   </Link>
                 </li>
                 <li className="my-1">
-                  <Link to="/frequently-asked-questions">
+                  <Link
+                    to={{
+                      pathname:
+                        'https://edtechhub.org/frequently-asked-questions',
+                    }}
+                    target="_blank"
+                  >
                     Terms and conditions
                   </Link>
                 </li>

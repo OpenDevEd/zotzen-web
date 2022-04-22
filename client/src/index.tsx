@@ -12,11 +12,11 @@ import reportWebVitals from './reportWebVitals';
 const queryClientConfig: Record<string, any> = {
   defaultOptions: {
     queries: {
-      // keepPreviousData: true,
+      keepPreviousData: true,
       retry: 2,
       staleTime: 1000 * 30, // 30 seconds
       cacheTime: 1000 * 30, // 30 seconds
-      refetchOnMount: false,
+      refetchOnMount: true,
       refetchOnWindowFocus: 'always',
       refetchOnReconnect: 'always',
       refetchInterval: 1000 * 30, // 30 seconds
@@ -29,7 +29,7 @@ const queryClientConfig: Record<string, any> = {
   },
 };
 
-const queryClient = new QueryClient(queryClientConfig);
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
