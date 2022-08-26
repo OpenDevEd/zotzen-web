@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 
 import UserLayout from '../../components/Layout/UserLayout';
 import Requests from '../../services/requests';
-import PopUpModal from './PopUpModal';
+import PopUpModal from '../../components/TaggingModal/PopUpModal';
 
 const AllOutputs: React.FC = () => {
   let users: Array<Record<string, any>> = [];

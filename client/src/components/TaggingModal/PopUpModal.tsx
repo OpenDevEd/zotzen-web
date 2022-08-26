@@ -217,7 +217,10 @@ const PopUpModal: React.FC<Props> = (props) => {
     >
       {!isLoading && selectedData.length > 0 ? (
         selectedData.map((parent) => (
-          <div key={parent.id + 1}>
+          <div
+            key={parent.id + 1}
+            style={{ display: (parent.name === '') ? 'none' : 'block' }}
+          >
             <label key={parent.id + 2}>
               <input
                 style={{
