@@ -18,21 +18,18 @@ routes.get('/all', authenticateUser, isAdmin, controller.fetchAllOutput);
 routes.put(
   '/tags/:itemId',
   authenticateUser,
-  isAdmin,
   controller.addTagsOnOutput
 );
 
 routes.put(
   '/tags/:itemId/remove',
   authenticateUser,
-  isAdmin,
   controller.removeTagsFromOutput
 );
 
 routes.get(
   '/tags/:itemId',
   authenticateUser,
-  isAdmin,
   controller.getOutputTags
 );
 export default routes;
