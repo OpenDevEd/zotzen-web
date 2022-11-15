@@ -229,7 +229,28 @@
     {
         "name": "Within country context",
         "id": "P3Q22NYF",
-        "children": []
+        "children": [
+            {
+                "name": "Fragile and conflict affected contexts",
+                "id": "XK85XMI7"
+            },
+            {
+                "name": "Low connectivity and/or electricity",
+                "id": "LA4ZR7QD"
+            },
+            {
+                "name": "Peri-urban",
+                "id": "PUVQQDAZ"
+            },
+            {
+                "name": "Rural",
+                "id": "RW6LT8BD"
+            },
+            {
+                "name": "Urban",
+                "id": "RUBAPRBY"
+            }
+        ]
     },
     {
         "name": "Language",
